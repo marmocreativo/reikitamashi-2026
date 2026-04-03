@@ -28,7 +28,7 @@
                 </flux:button>
                 <flux:menu>
                     @auth
-                        <flux:menu.item href="{{ route('dashboard') }}" icon="squares-2x2">Dashboard</flux:menu.item>
+                        <flux:menu.item href="{{ route('admin.dashboard') }}" icon="squares-2x2">Dashboard</flux:menu.item>
                         <flux:menu.separator />
                         <flux:menu.item
                             wire:click="logout"

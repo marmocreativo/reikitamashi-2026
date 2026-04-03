@@ -19,6 +19,9 @@
                     <flux:sidebar.item icon="home" :href="route('admin.categorias.index')" :current="request()->routeIs('admin.categorias.*')" wire:navigate>
                         {{ __('Categorias') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="home" :href="route('admin.publicaciones.index')" :current="request()->routeIs('admin.publicaciones.*')" wire:navigate>
+                        {{ __('Publicaciones') }}
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 

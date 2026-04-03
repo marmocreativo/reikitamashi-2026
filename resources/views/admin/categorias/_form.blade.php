@@ -32,6 +32,7 @@
         <flux:error name="URL" />
     </flux:field>
 
+    {{-- Descripción --}}
     <div x-data="editorCKEditor({{ Js::from(old('CATEGORIA_DESCRIPCION', $categoria?->CATEGORIA_DESCRIPCION ?? '')) }})">
         <div x-ref="editorEl"></div>
         <input type="hidden" name="CATEGORIA_DESCRIPCION" x-bind:value="contenido" />
