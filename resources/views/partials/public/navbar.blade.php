@@ -3,7 +3,7 @@
 
         {{-- Logo --}}
         <a href="{{ route('home') }}" class="flex items-center gap-2 shrink-0">
-            <img src="{{ asset('images/logo.png') }}" alt="Tamashi" class="h-10 w-auto">
+            <img src="{{ asset('menu_logo.png') }}" alt="Tamashi" class="h-10 w-auto">
         </a>
 
         {{-- Links centrados (desktop) --}}

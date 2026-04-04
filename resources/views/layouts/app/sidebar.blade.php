@@ -22,6 +22,9 @@
                     <flux:sidebar.item icon="home" :href="route('admin.publicaciones.index')" :current="request()->routeIs('admin.publicaciones.*')" wire:navigate>
                         {{ __('Publicaciones') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="banknotes" :href="route('historial_pagos.index')" :current="request()->routeIs('historial_pagos.*')" wire:navigate>
+                        Historial de pagos
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 

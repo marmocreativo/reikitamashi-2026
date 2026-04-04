@@ -106,6 +106,7 @@ class AdminPublicacionesController extends Controller
     public function edit(Publicacion $publicacion)
     {
         $tipos = Publicacion::TIPOS;
+        $publicacion->load('galeria', 'metaDatos');
 
         return view('admin.publicaciones.edit', compact('publicacion', 'tipos'));
     }
