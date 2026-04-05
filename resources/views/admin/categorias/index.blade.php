@@ -1,67 +1,82 @@
 <x-layouts::app :title="__('Categorías')">
-    <div class="flex h-full w-full flex-1 flex-col gap-6 p-6">
+    <div class="flex h-full w-full flex-1 flex-col gap-4 p-6">
+
+        {{-- Breadcrumbs --}}
+        <flux:breadcrumbs>
+            <flux:breadcrumbs.item href="{{ route('admin.dashboard') }}" wire:navigate>
+                Panel
+            </flux:breadcrumbs.item>
+            @isset($padre)
+                <flux:breadcrumbs.item href="{{ route('admin.categorias.index') }}" wire:navigate>
+                    Categorías
+                </flux:breadcrumbs.item>
+                <flux:breadcrumbs.item>{{ $padre->CATEGORIA_NOMBRE }}</flux:breadcrumbs.item>
+            @else
+                <flux:breadcrumbs.item>Categorías</flux:breadcrumbs.item>
+            @endisset
+        </flux:breadcrumbs>
 
         {{-- Encabezado --}}
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                @isset($padre)
+        <div>
+            @isset($padre)
+                <flux:heading size="xl">{{ $padre->CATEGORIA_NOMBRE }}</flux:heading>
+                <flux:text class="text-zinc-400">Subcategorías de esta sección</flux:text>
+            @else
+                <flux:heading size="xl">Categorías</flux:heading>
+                <flux:text class="text-zinc-400">Gestiona las categorías y su jerarquía</flux:text>
+            @endisset
+        </div>
+
+        {{-- Barra de herramientas --}}
+        <div class="flex flex-wrap items-center justify-between gap-3">
+
+            {{-- Filtros de tipo --}}
+            <div class="flex flex-wrap gap-1.5">
+                <flux:button
+                    href="{{ route('admin.categorias.index') }}"
+                    variant="{{ !isset($tipo) || !$tipo ? 'primary' : 'ghost' }}"
+                    size="sm"
+                    wire:navigate
+                >
+                    Todos
+                </flux:button>
+
+                @foreach(\App\Models\Publicacion::TIPOS as $t)
                     <flux:button
-                        icon="arrow-left"
-                        variant="ghost"
-                        href="{{ route('admin.categorias.index') }}"
+                        href="{{ route('admin.categorias.index', ['tipo' => $t]) }}"
+                        variant="{{ (isset($tipo) && $tipo === $t) ? 'primary' : 'ghost' }}"
+                        size="sm"
                         wire:navigate
-                    />
-                    <div>
-                        <flux:heading size="xl">{{ $padre->CATEGORIA_NOMBRE }}</flux:heading>
-                        <flux:text class="text-zinc-400">Subcategorías</flux:text>
-                    </div>
-                @else
-                    <flux:heading size="xl">Categorías</flux:heading>
-                @endisset
+                    >
+                        {{ ucfirst(str_replace('_', ' ', $t)) }}
+                    </flux:button>
+                @endforeach
             </div>
 
+            {{-- Acción principal --}}
             <flux:button
                 icon="plus"
                 variant="primary"
-                href="{{ route('admin.categorias.create', isset($padre) ? ['padre' => $padre->ID_CATEGORIA] : []) }}"
+                size="sm"
+                href="{{ route('admin.categorias.create', array_filter([
+                    'padre' => isset($padre) ? $padre->ID_CATEGORIA : null,
+                    'tipo'  => isset($tipo) && $tipo ? $tipo : (isset($padre) ? $padre->TIPO : null),
+                ])) }}"
                 wire:navigate
             >
                 Nueva categoría
             </flux:button>
         </div>
 
-        {{-- Filtro por tipo --}}
-        <div class="flex flex-wrap gap-2">
-            <flux:button
-                href="{{ route('admin.categorias.index') }}"
-                variant="{{ !$tipo ? 'primary' : 'ghost' }}"
-                size="sm"
-                wire:navigate
-            >
-                Todos
-            </flux:button>
-
-            @foreach(\App\Models\Publicacion::TIPOS as $t)
-                <flux:button
-                    href="{{ route('admin.categorias.index', ['tipo' => $t]) }}"
-                    variant="{{ $tipo === $t ? 'primary' : 'ghost' }}"
-                    size="sm"
-                    wire:navigate
-                >
-                    {{ $t }}
-                </flux:button>
-            @endforeach
-        </div>
-
         {{-- Mensajes --}}
         @if(session('success'))
-            <flux:callout variant="success" icon="check-circle">
+            <flux:callout variant="success" icon="check-circle" class="py-2">
                 {{ session('success') }}
             </flux:callout>
         @endif
 
         @if(session('error'))
-            <flux:callout variant="danger" icon="x-circle">
+            <flux:callout variant="danger" icon="x-circle" class="py-2">
                 {{ session('error') }}
             </flux:callout>
         @endif
@@ -71,80 +86,98 @@
             <table class="w-full text-sm">
                 <thead class="bg-zinc-50 text-left text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
                     <tr>
-                        <th class="px-4 py-3">Imagen</th>
-                        <th class="px-4 py-3">Nombre</th>
-                        <th class="px-4 py-3">Tipo</th>
-                        <th class="px-4 py-3">Visible</th>
-                        <th class="px-4 py-3">Estado</th>
-                        <th class="px-4 py-3">Orden</th>
-                        <th class="px-4 py-3">Destacada</th>
-                        <th class="px-4 py-3"></th>
+                        <th class="px-3 py-2">Imagen</th>
+                        <th class="px-3 py-2">Nombre / URL</th>
+                        <th class="px-3 py-2">Tipo</th>
+                        <th class="px-3 py-2 text-center">Visible</th>
+                        <th class="px-3 py-2 text-center">Estado</th>
+                        <th class="px-3 py-2 text-center">Orden</th>
+                        <th class="px-3 py-2 text-center">★</th>
+                        <th class="px-3 py-2"></th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-zinc-200 bg-white dark:divide-zinc-700 dark:bg-zinc-900">
+                <tbody class="divide-y divide-zinc-100 bg-white dark:divide-zinc-700/60 dark:bg-zinc-900">
                     @forelse ($categorias as $categoria)
-                        <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800">
-                            <td class="px-4 py-3">
+                        <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
+
+                            {{-- Imagen --}}
+                            <td class="px-3 py-2">
                                 <img
                                     src="{{ asset('storage/img/categorias/' . $categoria->IMAGEN) }}"
                                     alt="{{ $categoria->CATEGORIA_NOMBRE }}"
-                                    class="h-12 w-12 rounded-lg object-cover"
+                                    class="h-9 w-9 rounded-lg object-cover"
                                 />
                             </td>
-                            <td class="px-4 py-3">
-                                <div class="flex flex-col">
-                                    <span class="font-medium text-zinc-800 dark:text-white">
-                                        {{ $categoria->CATEGORIA_NOMBRE }}
-                                    </span>
-                                    <span class="text-xs text-zinc-400">/{{ $categoria->URL }}</span>
-                                </div>
+
+                            {{-- Nombre + URL --}}
+                            <td class="px-3 py-2">
+                                <span class="block font-medium leading-tight text-zinc-800 dark:text-white">
+                                    {{ $categoria->CATEGORIA_NOMBRE }}
+                                </span>
+                                <span class="text-xs text-zinc-400">/{{ $categoria->URL }}</span>
                             </td>
-                            <td class="px-4 py-3">
-                                <flux:badge variant="outline">{{ $categoria->TIPO }}</flux:badge>
+
+                            {{-- Tipo --}}
+                            <td class="px-3 py-2">
+                                <flux:badge size="sm" variant="outline">
+                                    {{ ucfirst(str_replace('_', ' ', $categoria->TIPO)) }}
+                                </flux:badge>
                             </td>
-                            <td class="px-4 py-3">
+
+                            {{-- Visible --}}
+                            <td class="px-3 py-2 text-center">
                                 @if($categoria->VISIBLE === 'visible')
-                                    <flux:badge color="green">Visible</flux:badge>
+                                    <flux:badge size="sm" color="green">Sí</flux:badge>
                                 @else
-                                    <flux:badge color="zinc">Invisible</flux:badge>
+                                    <flux:badge size="sm" color="zinc">No</flux:badge>
                                 @endif
                             </td>
-                            <td class="px-4 py-3">
+
+                            {{-- Estado --}}
+                            <td class="px-3 py-2 text-center">
                                 @if($categoria->ESTADO === 'activo')
-                                    <flux:badge color="green">Activo</flux:badge>
+                                    <flux:badge size="sm" color="green">Activo</flux:badge>
                                 @else
-                                    <flux:badge color="red">Inactivo</flux:badge>
+                                    <flux:badge size="sm" color="red">Inactivo</flux:badge>
                                 @endif
                             </td>
-                            <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300">
+
+                            {{-- Orden --}}
+                            <td class="px-3 py-2 text-center text-xs text-zinc-500 dark:text-zinc-400">
                                 {{ $categoria->ORDEN }}
                             </td>
-                            <td class="px-4 py-3">
+
+                            {{-- Destacada --}}
+                            <td class="px-3 py-2 text-center">
                                 <form action="{{ route('admin.categorias.destacada', $categoria) }}" method="POST">
                                     @csrf
                                     @method('PATCH')
-                                    <button type="submit" title="{{ $categoria->DESTACADA ? 'Quitar destacada' : 'Marcar como destacada' }}">
+                                    <button type="submit" title="{{ $categoria->DESTACADA ? 'Quitar destacada' : 'Marcar destacada' }}">
                                         @if($categoria->DESTACADA)
-                                            <flux:icon.star class="size-5 text-accent" variant="solid" />
+                                            <flux:icon.star class="size-4 text-yellow-400" variant="solid" />
                                         @else
-                                            <flux:icon.star class="size-5 text-zinc-300 hover:text-accent transition" />
+                                            <flux:icon.star class="size-4 text-zinc-300 hover:text-yellow-400 transition" />
                                         @endif
                                     </button>
                                 </form>
                             </td>
-                            <td class="px-4 py-3">
-                                <div class="flex items-center gap-2">
-                                    @if($categoria->hijas_count > 0)
-                                        <flux:button
-                                            size="sm"
-                                            variant="ghost"
-                                            icon="folder-open"
-                                            href="{{ route('admin.categorias.hijas', $categoria) }}"
-                                            wire:navigate
-                                        >
-                                            {{ $categoria->hijas_count }}
-                                        </flux:button>
-                                    @endif
+
+                            {{-- Acciones --}}
+                            <td class="px-3 py-2">
+                                <div class="flex items-center justify-end gap-1">
+
+                                    <flux:button
+                                        size="sm"
+                                        variant="ghost"
+                                        icon="folder-open"
+                                        href="{{ route('admin.categorias.hijas', $categoria) }}"
+                                        wire:navigate
+                                        title="Subcategorías"
+                                    >
+                                        @if($categoria->hijas_count > 0)
+                                            <span class="text-xs text-zinc-500">{{ $categoria->hijas_count }}</span>
+                                        @endif
+                                    </flux:button>
 
                                     <flux:button
                                         size="sm"
@@ -161,6 +194,7 @@
                                         icon="pencil"
                                         href="{{ route('admin.categorias.edit', $categoria) }}"
                                         wire:navigate
+                                        title="Editar"
                                     />
 
                                     <form method="POST" action="{{ route('admin.categorias.destroy', $categoria) }}">
@@ -171,8 +205,9 @@
                                             variant="ghost"
                                             icon="trash"
                                             type="submit"
-                                            class="text-red-500 hover:text-red-700"
+                                            class="text-red-400 hover:text-red-600"
                                             onclick="return confirm('¿Eliminar esta categoría?')"
+                                            title="Eliminar"
                                         />
                                     </form>
                                 </div>
@@ -180,7 +215,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-4 py-10 text-center text-zinc-400">
+                            <td colspan="8" class="px-4 py-10 text-center text-zinc-400">
                                 No hay categorías registradas.
                             </td>
                         </tr>

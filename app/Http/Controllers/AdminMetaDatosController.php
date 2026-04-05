@@ -27,7 +27,9 @@ class AdminMetaDatosController extends Controller
             ]
         );
 
-        return back()->with('success_meta', 'Metadato guardado correctamente.');
+        return redirect()
+            ->to(route('admin.publicaciones.edit', $publicacion) . '?tab=metadatos')
+            ->with('success_meta', 'Metadato guardado correctamente.');
     }
 
     public function destroy(Request $request, Publicacion $publicacion, string $nombre)
@@ -37,6 +39,8 @@ class AdminMetaDatosController extends Controller
             ->where('TIPO_OBJETO', MetaDato::TIPO_PUBLICACION)
             ->delete();
 
-        return back()->with('success_meta', 'Metadato eliminado.');
+        return redirect()
+            ->to(route('admin.publicaciones.edit', $publicacion) . '?tab=metadatos')
+            ->with('success_meta', 'Metadato eliminado.');
     }
 }

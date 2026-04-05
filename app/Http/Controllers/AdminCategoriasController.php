@@ -116,7 +116,9 @@ class AdminCategoriasController extends Controller
 
     public function edit(Categoria $categoria)
     {
-        return view('admin.categorias.edit', compact('categoria'));
+        $padre = $categoria->CATEGORIA_PADRE ? Categoria::find($categoria->CATEGORIA_PADRE) : null;
+
+        return view('admin.categorias.edit', compact('categoria', 'padre'));
     }
 
     public function update(Request $request, Categoria $categoria)

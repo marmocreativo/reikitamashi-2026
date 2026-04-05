@@ -40,9 +40,10 @@ class AdminPublicacionesController extends Controller
 
     public function index(Request $request)
     {
-        $tipo   = $request->get('tipo');
-        $estado = $request->get('estado');
-        $buscar = $request->get('buscar');
+        $tipo       = $request->get('tipo');
+        $estado     = $request->get('estado');
+        $buscar     = $request->get('buscar');
+        $categoriaId = $request->get('categoria');
 
         $query = Publicacion::query()->orderBy('ORDEN')->orderByDesc('FECHA_REGISTRO');
 
@@ -58,29 +59,33 @@ class AdminPublicacionesController extends Controller
             $query->where('PUBLICACION_TITULO', 'like', "%{$buscar}%");
         }
 
-        $categoria = $request->get('categoria');
-
-        if ($categoria) {
-            if ($categoria) {
-                $query->whereExists(function ($q) use ($categoria) {
-                    $q->select(\DB::raw(1))
+        if ($categoriaId) {
+            $query->whereExists(function ($q) use ($categoriaId) {
+                $q->select(\DB::raw(1))
                     ->from('categorias_objetos')
                     ->whereColumn('categorias_objetos.ID_OBJETO', 'publicaciones.ID_PUBLICACION')
-                    ->where('categorias_objetos.ID_CATEGORIA', $categoria);
-                });
-            }
+                    ->where('categorias_objetos.ID_CATEGORIA', $categoriaId);
+            });
         }
 
         $publicaciones = $query->paginate(20)->withQueryString();
 
-        return view('admin.publicaciones.index', compact('publicaciones', 'tipo', 'estado', 'buscar', 'categoria'));
+        $categoria  = $categoriaId ? \App\Models\Categoria::find($categoriaId) : null;
+        $categorias = \App\Models\Categoria::orderBy('CATEGORIA_NOMBRE')->get(['ID_CATEGORIA', 'CATEGORIA_NOMBRE', 'TIPO']);
+
+        return view('admin.publicaciones.index', compact('publicaciones', 'tipo', 'estado', 'buscar', 'categoria', 'categorias', 'categoriaId'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $tipos = Publicacion::TIPOS;
+        $categoriaPreseleccionada = $request->filled('categoria')
+            ? \App\Models\Categoria::find($request->categoria)
+            : null;
+        $categorias = \App\Models\Categoria::orderBy('CATEGORIA_NOMBRE')
+            ->get(['ID_CATEGORIA', 'CATEGORIA_NOMBRE', 'CATEGORIA_PADRE', 'TIPO']);
 
-        return view('admin.publicaciones.create', compact('tipos'));
+        return view('admin.publicaciones.create', compact('tipos', 'categorias', 'categoriaPreseleccionada'));
     }
 
     public function store(Request $request)
@@ -111,7 +116,15 @@ class AdminPublicacionesController extends Controller
             $data['IMAGEN'] = $this->procesarImagen($request->file('imagen'));
         }
 
-        Publicacion::create($data);
+        $publicacion = Publicacion::create($data);
+
+        if ($request->filled('ID_CATEGORIA')) {
+            \DB::table('categorias_objetos')->insert([
+                'ID_CATEGORIA' => $request->ID_CATEGORIA,
+                'ID_OBJETO'    => $publicacion->ID_PUBLICACION,
+                'TIPO'         => $publicacion->TIPO,
+            ]);
+        }
 
         return redirect()
             ->route('admin.publicaciones.index')
@@ -123,7 +136,14 @@ class AdminPublicacionesController extends Controller
         $tipos = Publicacion::TIPOS;
         $publicacion->load('galeria', 'metaDatos');
 
-        return view('admin.publicaciones.edit', compact('publicacion', 'tipos'));
+        $categorias = \App\Models\Categoria::orderBy('CATEGORIA_NOMBRE')
+            ->get(['ID_CATEGORIA', 'CATEGORIA_NOMBRE', 'CATEGORIA_PADRE', 'TIPO']);
+
+        $categoriaSeleccionada = \DB::table('categorias_objetos')
+            ->where('ID_OBJETO', $publicacion->ID_PUBLICACION)
+            ->value('ID_CATEGORIA');
+
+        return view('admin.publicaciones.edit', compact('publicacion', 'tipos', 'categorias', 'categoriaSeleccionada'));
     }
 
     public function update(Request $request, Publicacion $publicacion)
@@ -151,6 +171,18 @@ class AdminPublicacionesController extends Controller
         }
 
         $publicacion->update($data);
+
+        \DB::table('categorias_objetos')
+            ->where('ID_OBJETO', $publicacion->ID_PUBLICACION)
+            ->delete();
+
+        if ($request->filled('ID_CATEGORIA')) {
+            \DB::table('categorias_objetos')->insert([
+                'ID_CATEGORIA' => $request->ID_CATEGORIA,
+                'ID_OBJETO'    => $publicacion->ID_PUBLICACION,
+                'TIPO'         => $publicacion->TIPO,
+            ]);
+        }
 
         return redirect()
             ->route('admin.publicaciones.index')

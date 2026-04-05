@@ -54,7 +54,9 @@ class AdminGaleriaController extends Controller
             ]);
         }
 
-        return back()->with('success_galeria', 'Imágenes subidas correctamente.');
+        return redirect()
+        ->to(route('admin.publicaciones.edit', $publicacion) . '?tab=galeria')
+        ->with('success_galeria', 'Imágenes subidas correctamente.');
     }
 
     public function destroy(Publicacion $publicacion, GaleriaImagen $imagen)
@@ -66,7 +68,9 @@ class AdminGaleriaController extends Controller
 
         $imagen->delete();
 
-        return back()->with('success_galeria', 'Imagen eliminada.');
+        return redirect()
+            ->to(route('admin.publicaciones.edit', $publicacion) . '?tab=galeria')
+            ->with('success_galeria', 'Imagen eliminada.');
     }
 
     public function orden(Request $request, Publicacion $publicacion, GaleriaImagen $imagen)
