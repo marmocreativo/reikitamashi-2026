@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `cache` (
   KEY `cache_expiration_index` (`expiration`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla reiki_2026.cache: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla reiki_2026.cache: ~2 rows (aproximadamente)
 INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
 	('reikitamashi-cache-2e35bbb81a34c1b089893caf02c1986f', 'i:2;', 1775337550),
 	('reikitamashi-cache-2e35bbb81a34c1b089893caf02c1986f:timer', 'i:1775337550;', 1775337550);
@@ -52,10 +52,11 @@ CREATE TABLE IF NOT EXISTS `categorias` (
   `TIPO` varchar(255) NOT NULL,
   `ESTADO` varchar(255) NOT NULL DEFAULT 'activo',
   `ORDEN` int NOT NULL DEFAULT '0',
+  `DESTACADA` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID_CATEGORIA`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb3;
 
--- Volcando datos para la tabla reiki_2026.categorias: ~15 rows (aproximadamente)
+-- Volcando datos para la tabla reiki_2026.categorias: ~16 rows (aproximadamente)
 INSERT INTO `categorias` (`ID_CATEGORIA`, `CATEGORIA_NOMBRE`, `URL`, `CATEGORIA_DESCRIPCION`, `IMAGEN`, `CATEGORIA_PADRE`, `CATEGORIA_NIVEL`, `VISIBLE`, `TIPO`, `ESTADO`, `ORDEN`, `DESTACADA`) VALUES
 	(4, 'Sistemas de Reiki', 'sistemas-de-reiki', '<p>En este curso te convertirás en un transmisor puro de vibración de Reiki la cual usarás para sanar cuerpo, mente, e incrementar tu desarrollo espiritual. Reiki te permitirá conocer quién eres realmente. </p><p><br>Cuando nos referimos a la energía universal de la más alta vibración, es cuando decimos Reiki. Es una palabra japonesa que utilizó el maestro Mikao Usui para distinguirla de otras energías, y significa Energía del Universo. El maestro Usui creó un método para utilizarla y lo llamó Usui Reiki Ryoho.</p><p><br>En Reiki existen todas las respuestas para brillar interiormente. La luz de Reiki te será otorgada ilimitadamente, pero la recibirás de acuerdo a tu propio entendimiento y aceptación. La clave está en cómo entiendes el concepto de Reiki y sus técnicas, en esa proporción recibirás su amor.</p><p><br>Reiki es la energía universal de la más alta dimensión, y lleva consigo las propiedades de las ondas de amor, armonía y sanación. El amor es la esencia del Universo, la armonía es su voluntad y la sanación es su efecto.<br>Con el uso continuo de Reiki, podemos ayudarnos a nosotros mismo y a otras personas a sanar todo tipo de enfermedades. En un tratamiento de Reiki, se recupera la condición armoniosa entre la mente y el cuerpo. Actúa de manera natural fortaleciendo el sistema inmunológico, activando el sistema natural de sanación y la energía vital.</p><p><br>En un tratamiento la energía se aplica con las manos, todo el cuerpo del practicante de Reiki emana Luz, principalmente las manos, lo ojos y la boca. De manera natural actúa sanando en el cuerpo mental, emocional y físico.</p><p><br></p><p>Existen diferentes tipos de sistemas en Reiki Tamashi impartimos 5<br></p><ul><li>Reiki Japones</li><li>Reiki Angélico</li><li>Reiki Tibetano-Tántrico</li><li>Reiki Egipcio</li><li>Reiki Karuna<br><br>Acércate a nosotros y pide tu cita y con gusto te explicamos como puedes empezar a aprender las diferentes técnicas para que tu vida cambie de manera maravillosa y extraordinaria<br><br>Puedes pedir tu cita en el Whatsapp&nbsp; 55-16-44-34-52<br><br></li></ul>', 'categoria-5cfb6912309a9.jpg', 0, 1, 'visible', 'curso_reiki', 'activo', 0, 0),
 	(5, 'Reiki Japonés ', 'reiki-japones-mcnt', '<p class="MsoNormal"><span style="background-color: rgb(140, 123, 198);"></span>Los cursos de Reiki son una técnica de sanación a través de\r\nla canalización de energía por imposición de las manos, misma que ha sido\r\nutilizada en diferentes civilizaciones, de igual modo el uso de símbolos ha\r\nestado presente a lo largo de la historia de la humanidad. Conozca más acerca\r\nde nuestros diferentes cursos de Reiki.<o:p></o:p></p>', 'categoria-5cfbdc63447ab.jpg', 4, 2, 'visible', 'curso_reiki', 'activo', 0, 0),
@@ -81,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `categorias_objetos` (
   `TIPO` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Volcando datos para la tabla reiki_2026.categorias_objetos: ~171 rows (aproximadamente)
+-- Volcando datos para la tabla reiki_2026.categorias_objetos: ~172 rows (aproximadamente)
 INSERT INTO `categorias_objetos` (`ID_CATEGORIA`, `ID_OBJETO`, `TIPO`) VALUES
 	(15, 2, 'cursos'),
 	(2, 2, 'cursos'),
@@ -281,7 +282,7 @@ CREATE TABLE IF NOT EXISTS `galeria` (
   `ESTADO` varchar(255) NOT NULL DEFAULT 'activo',
   `ORDEN` int NOT NULL,
   PRIMARY KEY (`ID_GALERIA`)
-) ENGINE=InnoDB AUTO_INCREMENT=1092 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=1104 DEFAULT CHARSET=utf8mb3;
 
 -- Volcando datos para la tabla reiki_2026.galeria: ~1,033 rows (aproximadamente)
 INSERT INTO `galeria` (`ID_GALERIA`, `ID_OBJETO_PADRE`, `GALERIA_ARCHIVO`, `TIPO_ARCHIVO`, `TIPO`, `ESTADO`, `ORDEN`) VALUES
@@ -1729,7 +1730,7 @@ CREATE TABLE IF NOT EXISTS `meta_datos` (
   `TIPO_OBJETO` varchar(255) NOT NULL DEFAULT 'publicacion'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Volcando datos para la tabla reiki_2026.meta_datos: ~377 rows (aproximadamente)
+-- Volcando datos para la tabla reiki_2026.meta_datos: ~379 rows (aproximadamente)
 INSERT INTO `meta_datos` (`ID_OBJETO`, `DATO_NOMBRE`, `DATO_VALOR`, `TIPO_OBJETO`) VALUES
 	(14, 'texto_lateral', '', 'publicacion'),
 	(8, 'color', '', 'categoria'),
@@ -2117,9 +2118,9 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla reiki_2026.migrations: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla reiki_2026.migrations: ~6 rows (aproximadamente)
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(1, '0001_01_01_000000_create_users_table', 1),
 	(2, '0001_01_01_000001_create_cache_table', 1),
@@ -2153,10 +2154,11 @@ CREATE TABLE IF NOT EXISTS `publicaciones` (
   `TIPO` varchar(255) DEFAULT 'pagina',
   `ESTADO` varchar(255) DEFAULT 'activo',
   `ORDEN` int DEFAULT '0',
+  `DESTACADA` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID_PUBLICACION`)
-) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8mb3;
 
--- Volcando datos para la tabla reiki_2026.publicaciones: ~145 rows (aproximadamente)
+-- Volcando datos para la tabla reiki_2026.publicaciones: ~147 rows (aproximadamente)
 INSERT INTO `publicaciones` (`ID_PUBLICACION`, `PUBLICACION_TITULO`, `URL`, `PUBLICACION_RESUMEN`, `PUBLICACION_CONTENIDO`, `IMAGEN`, `PUBLICACION_PADRE`, `FECHA_REGISTRO`, `FECHA_ACTUALIZACION`, `FECHA_PUBLICACION`, `TIPO`, `ESTADO`, `ORDEN`, `DESTACADA`) VALUES
 	(1, 'Acerca de Nosotros', 'acerca-de-nosotros', 'Somos una institución que busca la concientización integral del ser humano en sus ámbitos mental, espiritual, emocional y físico.', '<h1 class="tituloCentrado" style="text-align: justify; margin: 20px 0px 10px; line-height: 1.1;">Tamashi</h1><h4 class="tituloCentrado" style="font-family: " helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" line-height:="" 1.1;="" color:="" rgb(51,="" 51,="" 51);="" margin-top:="" 10px;="" margin-bottom:="" font-size:="" 18px;="" text-align:="" center;"=""></h4><h3 class="tituloCentrado" style="text-align: left; line-height: 1.1; margin-top: 20px; margin-bottom: 10px;"><span style="font-size: 18px;">Somos una institución que busca la concientización integral del ser humano en sus ámbitos mental, espiritual, emocional y físico.</span></h3><h3 class="tituloCentrado" style="text-align: justify; line-height: 1.1; margin-top: 20px; margin-bottom: 10px;"><span style="text-align: left;">Centro Holístico y Terapéutico Tamashi</span></h3><p style="text-align: justify; margin-right: 0px; margin-bottom: 10px; margin-left: 0px;" helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 14px;"="">Centro Holístico y Terapéutico Tamashi fue creado con la finalidad de poner al alcance de todos terapias alternativas de sanación tanto física pero sobre todo espiritual. Es un centro de Amor, Luz y Conocimiento profundo hacia el ser humano.</p><h3 class="tituloCentrado" style="text-align: justify; line-height: 1.1; margin-top: 20px; margin-bottom: 10px;">Misión</h3><p style="text-align: justify; margin-right: 0px; margin-bottom: 10px; margin-left: 0px;" helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 14px;"="">El Centro Holístico y Terapéutico Tamashi es un centro de amor, luz y conocimiento profundo hacia el ser humano, que fue creado con la finalidad de poner al alcance de todas las personas, sin hacer distinción alguna, terapias alternativas de sanación tanto físicas como espirituales y brindar conocimiento a través de talleres y cursos de desarrollo espiritual.</p><h3 class="tituloCentrado" style="text-align: justify; line-height: 1.1; margin-top: 20px; margin-bottom: 10px;">Visión</h3><p style="text-align: justify; margin-right: 0px; margin-bottom: 10px; margin-left: 0px;" helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 14px;"="">Actualmente el Centro Holístico y Terapéutico Tamashi es un centro que brinda apoyo emocional y espiritual a todas las personas que lo necesitan cuya visión es que mediante el compromiso, trabajo duro, renovación y constantes aprendizajes y capacitación se convierta en una primera opción, un centro altamente confiable y líder entre los centros holísticos y terapéuticos por sus aportaciones a la espiritualidad.</p><h3 class="tituloCentrado" style="text-align: justify; line-height: 1.1; margin-top: 20px; margin-bottom: 10px;">Valores</h3><p style="text-align: justify; margin-right: 0px; margin-bottom: 10px; margin-left: 0px;" helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 14px;"="">Los valores del Centro Holístico y Terapéutico Tamashi son los pilares que nos sostienen como organización y que nos guían en nuestra misión.</p><ul style="margin-bottom: 10px;" helvetica="" neue",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 14px;"=""><li style="text-align: justify; ">Espiritualidad</li><li style="text-align: justify; ">Ética</li><li style="text-align: justify; ">Honestidad</li><li style="text-align: justify; ">Compromiso</li><li style="text-align: justify; ">Objetividad</li><li style="text-align: justify; ">Conocimiento</li><li style="text-align: justify; ">Profesionalismo</li><li style="text-align: justify; ">Integridad</li><li style="text-align: justify; ">Respeto</li></ul>', 'publicacion-5cfb5c8b938a5.jpg', 0, '2019-06-08 06:00:00', '2021-10-17 17:48:56', '2019-06-08 06:00:00', 'pagina', 'activo', 0, 0),
 	(2, 'Mandalas', 'mandalas', 'Los Mándalas actúan equilibrando los chacras por medio de los colores y haciendo meditar el lado lógico de nuestro cerebro a través de las formas geométricas sagradas. El Mándala enviará impulsos a la mente interna llegando a los receptores del cerebro donde se procesará y se obtendrá una reacción sanadora.', '<p style="margin-right: 0px; margin-bottom: 10px; margin-left: 0px; color: rgb(51, 51, 51); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14px;">Los Mándalas actúan equilibrando los chacras por medio de los colores y haciendo meditar el lado lógico de nuestro cerebro a través de las formas geométricas sagradas. El Mándala enviará impulsos a la mente interna llegando a los receptores del cerebro donde se procesará y se obtendrá una reacción sanadora.</p><p style="margin-right: 0px; margin-bottom: 10px; margin-left: 0px; color: rgb(51, 51, 51); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14px;">Los mándalas son útiles para la concentración, activación de la energía positiva, energización de lugares, meditación profunda para elevar el nivel de conciencia, expandir la capacidad de la mente y la memoria.</p><p style="margin-right: 0px; margin-bottom: 10px; margin-left: 0px; color: rgb(51, 51, 51); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14px;">Los mándalas pueden ayudarte en el equilibrio de los chacras, en ese caso habrá que elegir el color adecuado dependiendo de la cualidad que se quiere trabajar, El mándala enviará impulsos a la mente interna llegando a los receptores del cerebro en donde se procesará y se obtendrá una reacción.</p><p style="margin-right: 0px; margin-bottom: 10px; margin-left: 0px; color: rgb(51, 51, 51); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14px;">Son muchos los beneficios que podemos tomar de un mándala, lo mínimo que puede hacer por nosotros es ayudarnos a centrarnos cuando sufrimos de alguna alteración nerviosa, nos ayuda a relajarnos y a encontrar la paz en medio de las dificultades y eso en medio de un mundo tan complejo y conflictivo.</p><p style="margin-right: 0px; margin-bottom: 10px; margin-left: 0px; color: rgb(51, 51, 51); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14px;">Cromoterapia: Un mándala siempre va a ser positivo sea cual sea su color, pero resulta doblemente útil cuando nosotros ya hemos localizado algún color determinado, el cual actuaria de manera directa acelerando el proceso de curación.</p>', 'publicacion-5cfc5533ccc09.jpg', 0, '2019-06-08 06:00:00', '2025-07-04 00:43:57', '2019-06-08 06:00:00', 'cursos', 'inactivo', 15, 0),
@@ -2331,7 +2333,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   KEY `sessions_last_activity_index` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla reiki_2026.sessions: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla reiki_2026.sessions: ~1 rows (aproximadamente)
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
 	('FfhMYihgmkVYXInBCEkZ0ycGHhtaMKvO9IZ6jx9b', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 OPR/129.0.0.0', 'eyJfdG9rZW4iOiI2UW8wZGUwc3NqMlRobW41RnlVUjFTNTFJNzNOb0RCd3lHZ1N3V2d4IiwidXJsIjpbXSwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cL2xvY2FsaG9zdDo4MDAwXC9oaXN0b3JpYWxfcGFnb3NcLzMzNCIsInJvdXRlIjoiaGlzdG9yaWFsX3BhZ29zLnNob3cifSwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119LCJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6MX0=', 1775357077);
 
@@ -2375,7 +2377,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla reiki_2026.users: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla reiki_2026.users: ~1 rows (aproximadamente)
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `two_factor_secret`, `two_factor_recovery_codes`, `two_factor_confirmed_at`, `remember_token`, `created_at`, `updated_at`) VALUES
 	(1, 'Manuel', 'marmocreativo@gmail.com', NULL, '$2y$12$zaUZloQFDhLRpKZCWMdF2e0L6VuT73NmvryGEtQJc7/ro4k9/S8Im', NULL, NULL, NULL, NULL, '2026-04-03 18:50:11', '2026-04-03 18:50:11');
 
