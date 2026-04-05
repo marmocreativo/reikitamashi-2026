@@ -94,11 +94,13 @@ class AdminCategoriasController extends Controller
             'TIPO'                   => 'required|in:pagina,curso_reiki,cursos,terapia,galeria,promocion,egresado',
             'ESTADO'                 => 'required|in:activo,inactivo',
             'ORDEN'                  => 'nullable|integer',
+            'DESTACADA'             => 'boolean',
             'imagen'                 => 'nullable|image|max:5120',
         ]);
 
         $data['CATEGORIA_PADRE'] = $data['CATEGORIA_PADRE'] ?? 0;
         $data['CATEGORIA_NIVEL'] = $data['CATEGORIA_PADRE'] > 0 ? 2 : 1;
+        $data['DESTACADA'] = $request->boolean('DESTACADA');
         $data['IMAGEN']          = 'default.jpg';
 
         if ($request->hasFile('imagen')) {
@@ -127,6 +129,7 @@ class AdminCategoriasController extends Controller
             'TIPO'                   => 'required|in:pagina,curso_reiki,cursos,terapia,galeria,promocion,egresado',
             'ESTADO'                 => 'required|in:activo,inactivo',
             'ORDEN'                  => 'nullable|integer',
+            'DESTACADA'             => 'boolean',
             'imagen'                 => 'nullable|image|max:5120',
         ]);
 
@@ -135,6 +138,7 @@ class AdminCategoriasController extends Controller
         }
 
         $categoria->update($data);
+        $data['DESTACADA'] = $request->boolean('DESTACADA');
 
         return redirect()
             ->route('admin.categorias.index')
@@ -159,5 +163,12 @@ class AdminCategoriasController extends Controller
         return redirect()
             ->route('admin.categorias.index')
             ->with('success', 'Categoría eliminada correctamente.');
+    }
+
+    public function toggleDestacada(Categoria $categoria)
+    {
+        $categoria->update(['DESTACADA' => !$categoria->DESTACADA]);
+
+        return back()->with('success', $categoria->DESTACADA ? 'Categoría destacada.' : 'Categoría quitada de destacadas.');
     }
 }

@@ -21,6 +21,7 @@ class Categoria extends Model
         'TIPO',
         'ESTADO',
         'ORDEN',
+        'DESTACADA',
     ];
 
     // Publicaciones relacionadas a través de categorias_objetos

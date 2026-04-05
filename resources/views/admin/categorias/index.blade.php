@@ -77,6 +77,7 @@
                         <th class="px-4 py-3">Visible</th>
                         <th class="px-4 py-3">Estado</th>
                         <th class="px-4 py-3">Orden</th>
+                        <th class="px-4 py-3">Destacada</th>
                         <th class="px-4 py-3"></th>
                     </tr>
                 </thead>
@@ -119,6 +120,19 @@
                                 {{ $categoria->ORDEN }}
                             </td>
                             <td class="px-4 py-3">
+                                <form action="{{ route('admin.categorias.destacada', $categoria) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" title="{{ $categoria->DESTACADA ? 'Quitar destacada' : 'Marcar como destacada' }}">
+                                        @if($categoria->DESTACADA)
+                                            <flux:icon.star class="size-5 text-accent" variant="solid" />
+                                        @else
+                                            <flux:icon.star class="size-5 text-zinc-300 hover:text-accent transition" />
+                                        @endif
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="px-4 py-3">
                                 <div class="flex items-center gap-2">
                                     @if($categoria->hijas_count > 0)
                                         <flux:button
@@ -131,6 +145,15 @@
                                             {{ $categoria->hijas_count }}
                                         </flux:button>
                                     @endif
+
+                                    <flux:button
+                                        size="sm"
+                                        variant="ghost"
+                                        icon="document-text"
+                                        href="{{ route('admin.publicaciones.index', ['categoria' => $categoria->ID_CATEGORIA]) }}"
+                                        wire:navigate
+                                        title="Ver publicaciones"
+                                    />
 
                                     <flux:button
                                         size="sm"

@@ -22,5 +22,6 @@
     @include('partials.public.footer')
 
     @stack('scripts')
+    @fluxScripts
 </body>
 </html>

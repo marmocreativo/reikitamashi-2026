@@ -3,161 +3,180 @@
 @section('title', 'Contacto')
 
 @section('content')
-<section class="py-16 px-4 max-w-6xl mx-auto">
 
-    <div class="text-center mb-12">
-        <h1 class="text-3xl font-bold text-zinc-800">Contáctanos</h1>
-        <p class="text-zinc-500 mt-2">Estamos para atenderte. Escríbenos o visítanos.</p>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-
-        {{-- Columna izquierda: datos + mapa --}}
-        <div class="space-y-8">
-
-            {{-- Datos de contacto --}}
-            <div class="space-y-4">
-                <div class="flex items-start gap-3">
-                    <div class="mt-1 w-8 h-8 flex-shrink-0 text-violet-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 6.75Z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="font-semibold text-zinc-700">Llamadas y WhatsApp</p>
-                        <a href="tel:5516443452" class="text-zinc-500 hover:text-violet-600 transition">55-16-44-34-52</a>
-                        <span class="mx-2 text-zinc-300">·</span>
-                        <a href="https://wa.me/5215516443452" target="_blank" class="text-zinc-500 hover:text-violet-600 transition">Abrir WhatsApp</a>
-                    </div>
-                </div>
-
-                <div class="flex items-start gap-3">
-                    <div class="mt-1 w-8 h-8 flex-shrink-0 text-violet-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="font-semibold text-zinc-700">Correo electrónico</p>
-                        <a href="mailto:reikitamashi@hotmail.com" class="text-zinc-500 hover:text-violet-600 transition">reikitamashi@hotmail.com</a>
-                    </div>
-                </div>
-
-                <div class="flex items-start gap-3">
-                    <div class="mt-1 w-8 h-8 flex-shrink-0 text-violet-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="font-semibold text-zinc-700">Dirección</p>
-                        <p class="text-zinc-500">Calle Bosques de Yucatán No 15</p>
-                        <p class="text-zinc-500">Col. Bosques de México</p>
-                        <p class="text-zinc-500">Tlalnepantla, Estado de México. CP 54050</p>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Mapa --}}
-            <div class="rounded-xl overflow-hidden shadow-md h-72">
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3761.5!2d-99.2080!3d19.5450!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sBosques%20de%20Yucat%C3%A1n%2015%2C%20Bosques%20de%20M%C3%A9xico%2C%20Tlalnepantla!5e0!3m2!1ses!2smx!4v1"
-                    width="100%"
-                    height="100%"
-                    style="border:0;"
-                    allowfullscreen=""
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"
-                    title="Ubicación Tamashi">
-                </iframe>
-            </div>
+    {{-- ============================================
+         MINI HERO
+    ============================================ --}}
+    <section
+        class="relative flex items-end min-h-[40vh] pt-16"
+        style="background-image: url('{{ asset('hero_bg.jpg') }}'); background-size: cover; background-position: center;"
+    >
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="relative z-10 w-full max-w-6xl mx-auto px-6 pb-10 flex flex-col gap-2">
+            <p class="text-white/70 text-sm font-semibold uppercase tracking-widest">Tamashi</p>
+            <h1 class="text-4xl md:text-5xl font-bold text-white drop-shadow" style="font-family: 'Georgia', serif;">
+                Contáctanos
+            </h1>
+            <p class="text-white/80 text-sm leading-relaxed max-w-xl">
+                Estamos para atenderte. Escríbenos o visítanos.
+            </p>
         </div>
+    </section>
 
-        {{-- Columna derecha: formulario --}}
-        <div class="bg-white rounded-2xl shadow-md p-8">
-            <h2 class="text-xl font-semibold text-zinc-800 mb-6">Envíanos un mensaje</h2>
+    {{-- ============================================
+         CONTENIDO
+    ============================================ --}}
+    <section class="py-16 bg-background">
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12">
 
-            @if(session('success'))
-                <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg text-sm">
-                    {{ session('success') }}
+            {{-- Columna izquierda: datos + mapa --}}
+            <div class="flex flex-col gap-8">
+
+                {{-- Datos de contacto --}}
+                <div class="flex flex-col gap-5">
+
+                    <div class="flex items-start gap-4">
+                        <div class="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 6.75Z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-primary">Llamadas y WhatsApp</p>
+                            <a href="tel:5516443452" class="text-gray-500 hover:text-accent transition text-sm">55-16-44-34-52</a>
+                            <span class="mx-2 text-gray-300">·</span>
+                            <a href="https://wa.me/5215516443452" target="_blank" class="text-gray-500 hover:text-accent transition text-sm">Abrir WhatsApp</a>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-primary">Correo electrónico</p>
+                            <a href="mailto:reikitamashi@hotmail.com" class="text-gray-500 hover:text-accent transition text-sm">reikitamashi@hotmail.com</a>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-primary">Dirección</p>
+                            <p class="text-gray-500 text-sm">Calle Bosques de Yucatán No 15</p>
+                            <p class="text-gray-500 text-sm">Col. Bosques de México</p>
+                            <p class="text-gray-500 text-sm">Tlalnepantla, Estado de México. CP 54050</p>
+                        </div>
+                    </div>
+
                 </div>
-            @endif
 
-            <form action="{{ route('contacto.send') }}" method="POST" class="space-y-5">
-                @csrf
-                <div>
-                    <label class="block text-sm font-medium text-zinc-700 mb-1" for="nombre">Nombre</label>
+                {{-- Mapa --}}
+                <div class="rounded-2xl overflow-hidden shadow-md h-72">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3760.1358333891!2d-99.23135122410127!3d19.53578108176584!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d21d25d5e7ffcb%3A0xa62a19701a5140dc!2sReiki%20Tamashi!5e0!3m2!1ses!2smx!4v1775347713371!5m2!1ses!2smx"
+                        width="100%"
+                        height="100%"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Ubicación Tamashi">
+                    </iframe>
+                </div>
+
+            </div>
+
+            {{-- Columna derecha: formulario --}}
+            <div
+                class="bg-white rounded-2xl shadow-sm p-8 flex flex-col gap-5"
+                x-data="{
+                    nombre: '',
+                    correo: '',
+                    telefono: '',
+                    asunto: '',
+                    mensaje: '',
+                    enviar() {
+                        const msg = `Hola, me llamo ${this.nombre}.\n\nAsunto: ${this.asunto}\n\nMensaje: ${this.mensaje}\n\nCorreo: ${this.correo}\nTeléfono: ${this.telefono}`
+                        const url = `https://wa.me/5215516443452?text=${encodeURIComponent(msg)}`
+                        window.open(url, '_blank')
+                    }
+                }"
+            >
+                <h2 class="text-xl font-bold text-primary" style="font-family: 'Georgia', serif;">Envíanos un mensaje</h2>
+
+                <div class="flex flex-col gap-1">
+                    <label class="text-sm font-semibold text-primary">Nombre</label>
                     <input
                         type="text"
-                        id="nombre"
-                        name="nombre"
-                        value="{{ old('nombre') }}"
-                        placeholder="Tu nombre"
-                        class="w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-sm text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent @error('nombre') border-red-400 @enderror"
+                        x-model="nombre"
+                        placeholder="Tu nombre completo"
+                        class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition"
                     >
-                    @error('nombre') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-zinc-700 mb-1" for="email">Correo electrónico</label>
+                <div class="flex flex-col gap-1">
+                    <label class="text-sm font-semibold text-primary">Correo electrónico</label>
                     <input
                         type="email"
-                        id="email"
-                        name="email"
-                        value="{{ old('email') }}"
+                        x-model="correo"
                         placeholder="tu@correo.com"
-                        class="w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-sm text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent @error('email') border-red-400 @enderror"
+                        class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition"
                     >
-                    @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-zinc-700 mb-1" for="telefono">Teléfono <span class="text-zinc-400 font-normal">(opcional)</span></label>
+                <div class="flex flex-col gap-1">
+                    <label class="text-sm font-semibold text-primary">Teléfono <span class="text-gray-400 font-normal">(opcional)</span></label>
                     <input
                         type="tel"
-                        id="telefono"
-                        name="telefono"
-                        value="{{ old('telefono') }}"
+                        x-model="telefono"
                         placeholder="55 0000 0000"
-                        class="w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-sm text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent"
+                        class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition"
                     >
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-zinc-700 mb-1" for="asunto">Asunto</label>
+                <div class="flex flex-col gap-1">
+                    <label class="text-sm font-semibold text-primary">Asunto</label>
                     <input
                         type="text"
-                        id="asunto"
-                        name="asunto"
-                        value="{{ old('asunto') }}"
+                        x-model="asunto"
                         placeholder="¿En qué podemos ayudarte?"
-                        class="w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-sm text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent @error('asunto') border-red-400 @enderror"
+                        class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition"
                     >
-                    @error('asunto') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-zinc-700 mb-1" for="mensaje">Mensaje</label>
+                <div class="flex flex-col gap-1">
+                    <label class="text-sm font-semibold text-primary">Mensaje</label>
                     <textarea
-                        id="mensaje"
-                        name="mensaje"
-                        rows="5"
+                        x-model="mensaje"
+                        rows="4"
                         placeholder="Escribe tu mensaje aquí..."
-                        class="w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-sm text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent @error('mensaje') border-red-400 @enderror"
-                    >{{ old('mensaje') }}</textarea>
-                    @error('mensaje') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                        class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition"
+                    ></textarea>
                 </div>
 
                 <button
-                    type="submit"
-                    class="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold py-3 px-6 rounded-lg transition text-sm"
+                    type="button"
+                    @click="enviar()"
+                    class="w-full flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition text-sm"
                 >
-                    Enviar mensaje
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.861L.057 23.571a.75.75 0 0 0 .921.921l5.71-1.475A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.715 9.715 0 0 1-5.003-1.386l-.36-.214-3.733.964.993-3.648-.235-.374A9.715 9.715 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/>
+                    </svg>
+                    Enviar por WhatsApp
                 </button>
-            </form>
-        </div>
 
-    </div>
-</section>
+            </div>
+
+        </div>
+    </section>
+
 @endsection

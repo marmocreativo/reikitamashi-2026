@@ -29,9 +29,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('dashboard', [AdminHomeController::class, 'index'])->name('dashboard');
 
+        // Categorias
         Route::get('categorias/{categoria}/hijas', [AdminCategoriasController::class, 'hijas'])->name('categorias.hijas');
+        Route::patch('categorias/{categoria}/destacada', [AdminCategoriasController::class, 'toggleDestacada'])
+            ->name('categorias.destacada');
         Route::resource('categorias', AdminCategoriasController::class);
 
+        // Publicaciones
+        Route::patch('publicaciones/{publicacion}/destacada', [AdminPublicacionesController::class, 'toggleDestacada'])
+            ->name('publicaciones.destacada');
         Route::resource('publicaciones', AdminPublicacionesController::class)
             ->parameters(['publicaciones' => 'publicacion']);
         

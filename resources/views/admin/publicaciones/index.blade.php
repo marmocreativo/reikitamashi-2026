@@ -8,6 +8,9 @@
 
     {{-- Filtros --}}
     <form method="GET" action="{{ route('admin.publicaciones.index') }}" class="flex flex-wrap gap-3 mb-6">
+    @if($categoria)
+        <input type="hidden" name="categoria" value="{{ $categoria }}">
+    @endif
         <flux:input name="buscar" placeholder="Buscar por título..." value="{{ $buscar }}" class="w-64" />
 
         <flux:select name="tipo" placeholder="Todos los tipos">
@@ -40,10 +43,12 @@
         <table class="w-full text-sm text-left">
             <thead class="bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 uppercase text-xs">
                 <tr>
+                    <th class="px-4 py-3">Imagen</th>
                     <th class="px-4 py-3">Título</th>
                     <th class="px-4 py-3">Tipo</th>
                     <th class="px-4 py-3">Estado</th>
                     <th class="px-4 py-3">Orden</th>
+                    <th class="px-4 py-3">Destacada</th>
                     <th class="px-4 py-3">Fecha registro</th>
                     <th class="px-4 py-3 text-right">Acciones</th>
                 </tr>
@@ -51,6 +56,13 @@
             <tbody class="divide-y divide-zinc-200 dark:divide-zinc-700">
                 @forelse ($publicaciones as $pub)
                     <tr class="bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">
+                        <td class="px-4 py-3">
+                            <img
+                                src="{{ $pub->IMAGEN !== 'default.jpg' ? asset('storage/img/publicaciones/' . $pub->IMAGEN) : asset('img/default.jpg') }}"
+                                alt="{{ $pub->PUBLICACION_TITULO }}"
+                                class="w-14 h-14 object-cover rounded-lg"
+                            >
+                        </td>
                         <td class="px-4 py-3">
                             <div class="font-medium text-zinc-900 dark:text-zinc-100">{{ $pub->PUBLICACION_TITULO }}</div>
                             <div class="text-xs text-zinc-400">{{ $pub->URL }}</div>
@@ -64,6 +76,19 @@
                             </flux:badge>
                         </td>
                         <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300">{{ $pub->ORDEN }}</td>
+                        <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300">
+                            <form action="{{ route('admin.publicaciones.destacada', $pub) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" title="{{ $pub->DESTACADA ? 'Quitar destacada' : 'Marcar como destacada' }}">
+                                    @if($pub->DESTACADA)
+                                        <flux:icon.star class="size-5 text-accent" variant="solid" />
+                                    @else
+                                        <flux:icon.star class="size-5 text-zinc-300 hover:text-accent transition" />
+                                    @endif
+                                </button>
+                            </form>
+                        </td>
                         <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300">{{ $pub->FECHA_REGISTRO?->format('d/m/Y') }}</td>
                         <td class="px-4 py-3">
                             <div class="flex justify-end gap-2">

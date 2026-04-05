@@ -24,15 +24,18 @@
     --color-zinc-900: #171717;
     --color-zinc-950: #0a0a0a;
 
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
+    --color-primary: #433545;
+    --color-secondary: #7D6A80;
+    --color-accent: #9C69B8;
+    --color-accent-content: #9C69B8;
     --color-accent-foreground: var(--color-white);
+    --color-background: #F8F8F8;
 }
 
 @layer theme {
     .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
+        --color-accent: #9C69B8;
+        --color-accent-content: #9C69B8;
         --color-accent-foreground: var(--color-neutral-800);
     }
 }
@@ -67,3 +70,12 @@ select:focus[data-flux-control] {
 } */
 
 [x-cloak] { display: none !important; }
+[x-teleport] {
+    z-index: 99999;
+}
+
+@layer base {
+    .carrusel-card {
+        transition: aspect-ratio 0.5s ease, transform 0.5s ease;
+    }
+}

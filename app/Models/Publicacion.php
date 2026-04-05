@@ -33,6 +33,7 @@ class Publicacion extends Model
         'TIPO',
         'ESTADO',
         'ORDEN',
+        'DESTACADA',
     ];
 
     protected $casts = [

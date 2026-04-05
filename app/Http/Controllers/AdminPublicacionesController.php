@@ -58,9 +58,22 @@ class AdminPublicacionesController extends Controller
             $query->where('PUBLICACION_TITULO', 'like', "%{$buscar}%");
         }
 
+        $categoria = $request->get('categoria');
+
+        if ($categoria) {
+            if ($categoria) {
+                $query->whereExists(function ($q) use ($categoria) {
+                    $q->select(\DB::raw(1))
+                    ->from('categorias_objetos')
+                    ->whereColumn('categorias_objetos.ID_OBJETO', 'publicaciones.ID_PUBLICACION')
+                    ->where('categorias_objetos.ID_CATEGORIA', $categoria);
+                });
+            }
+        }
+
         $publicaciones = $query->paginate(20)->withQueryString();
 
-        return view('admin.publicaciones.index', compact('publicaciones', 'tipo', 'estado', 'buscar'));
+        return view('admin.publicaciones.index', compact('publicaciones', 'tipo', 'estado', 'buscar', 'categoria'));
     }
 
     public function create()
@@ -80,6 +93,7 @@ class AdminPublicacionesController extends Controller
             'TIPO'                 => 'required|in:' . implode(',', Publicacion::TIPOS),
             'ESTADO'               => 'required|in:activo,inactivo',
             'ORDEN'                => 'nullable|integer',
+            'DESTACADA'             => 'boolean',
             'PUBLICACION_PADRE'    => 'nullable|integer',
             'FECHA_PUBLICACION'    => 'nullable|date',
             'imagen'               => 'nullable|image|max:5120',
@@ -91,6 +105,7 @@ class AdminPublicacionesController extends Controller
         $data['FECHA_ACTUALIZACION'] = now();
         $data['PUBLICACION_PADRE'] = $data['PUBLICACION_PADRE'] ?? 0;
         $data['ORDEN']            = $data['ORDEN'] ?? 0;
+        $data['DESTACADA'] = $request->boolean('DESTACADA');
 
         if ($request->hasFile('imagen')) {
             $data['IMAGEN'] = $this->procesarImagen($request->file('imagen'));
@@ -121,12 +136,14 @@ class AdminPublicacionesController extends Controller
             'TIPO'                 => 'required|in:' . implode(',', Publicacion::TIPOS),
             'ESTADO'               => 'required|in:activo,inactivo',
             'ORDEN'                => 'nullable|integer',
+            'DESTACADA'             => 'boolean',
             'PUBLICACION_PADRE'    => 'nullable|integer',
             'FECHA_PUBLICACION'    => 'nullable|date',
             'imagen'               => 'nullable|image|max:5120',
         ]);
 
         $data['FECHA_ACTUALIZACION'] = now();
+        $data['DESTACADA'] = $request->boolean('DESTACADA');
         $data['FECHA_PUBLICACION'] = $data['FECHA_PUBLICACION'] ?? $publicacion->FECHA_PUBLICACION ?? now();
 
         if ($request->hasFile('imagen')) {
@@ -154,5 +171,12 @@ class AdminPublicacionesController extends Controller
         return redirect()
             ->route('admin.publicaciones.index')
             ->with('success', 'Publicación eliminada correctamente.');
+    }
+    
+    public function toggleDestacada(Publicacion $publicacion)
+    {
+        $publicacion->update(['DESTACADA' => !$publicacion->DESTACADA]);
+
+        return back()->with('success', $publicacion->DESTACADA ? 'Publicación destacada.' : 'Publicación quitada de destacadas.');
     }
 }

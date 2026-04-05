@@ -1,59 +1,79 @@
-<footer class="bg-gray-900 text-gray-300">
-    <div class="max-w-7xl mx-auto px-4 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<footer class="bg-primary text-white/80">
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
 
             {{-- Columna 1: Logo + descripción --}}
-            <div class="flex flex-col items-center md:items-start gap-3">
-                <img src="{{ asset('images/logo.png') }}" alt="Tamashi" class="h-16 w-auto">
-                <p class="text-sm text-center md:text-left text-gray-400">
-                    Ofrecemos ayuda espiritual y un lugar de convivencia
+            <div class="flex flex-col items-start gap-4">
+                <img src="{{ asset('menu_logo.png') }}" alt="Tamashi" class="h-14 w-auto brightness-0 invert">
+                <p class="text-sm text-white/70 leading-relaxed max-w-sm">
+                    Ofrecemos ayuda espiritual y un lugar de convivencia. Sanación del pasado, para vivir bien el presente y ser mejores en el futuro.
                 </p>
             </div>
 
-            {{-- Columna 2: Dirección --}}
-            <div>
-                <h4 class="text-white font-semibold mb-3">Dirección</h4>
-                <p class="text-sm text-gray-400 leading-relaxed">
-                    Calle Bosques de Yucatán No 15, Col. Bosques de México.
-                    Tlalnepantla, Estado de México. CP 54050
-                </p>
-            </div>
+            {{-- Columna 2: Contacto + redes --}}
+            <div class="flex flex-col gap-5">
 
-            {{-- Columna 3: Promociones --}}
-            <div>
-                <h4 class="text-white font-semibold mb-3">Promociones</h4>
-                {{-- Por ahora vacío, se llenará dinámicamente --}}
-            </div>
+                {{-- Datos de contacto --}}
+                <div class="flex flex-col gap-3">
+                    <h4 class="text-white font-semibold text-sm uppercase tracking-widest">Contacto</h4>
 
-            {{-- Columna 4: Redes Sociales --}}
-            <div>
-                <h4 class="text-white font-semibold mb-3">Redes Sociales</h4>
-                <ul class="flex flex-col gap-2 text-sm">
-                    <li>
-                        <a href="#" class="flex items-center gap-2 hover:text-white transition">
-                            <x-si-facebook class="size-4 fill-current" />
-                            Facebook
+                    <div class="flex items-start gap-3 text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 mt-0.5 shrink-0 text-white/50" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                        </svg>
+                        <span class="text-white/70">Calle Bosques de Yucatán No 15, Col. Bosques de México, Tlalnepantla, Estado de México. CP 54050</span>
+                    </div>
+
+                    <div class="flex items-center gap-3 text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 shrink-0 text-white/50" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 6.75Z" />
+                        </svg>
+                        <a href="tel:5516443452" class="text-white/70 hover:text-white transition">55-16-44-34-52</a>
+                    </div>
+
+                    <div class="flex items-center gap-3 text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 shrink-0 text-white/50" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                        </svg>
+                        <a href="mailto:reikitamashi@hotmail.com" class="text-white/70 hover:text-white transition">reikitamashi@hotmail.com</a>
+                    </div>
+                </div>
+
+                {{-- Redes sociales --}}
+                <div class="flex flex-col gap-3">
+                    <h4 class="text-white font-semibold text-sm uppercase tracking-widest">Síguenos</h4>
+                    <div class="flex items-center gap-4">
+                        <a
+                            href="https://www.facebook.com/Reiki-Tamashi-393432114077987/"
+                            target="_blank"
+                            class="flex items-center gap-2 text-sm text-white/70 hover:text-white transition"
+                        >
+                            <x-si-facebook class="size-5 fill-current" />
                         </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center gap-2 hover:text-white transition">
-                            <x-si-x class="size-4 fill-current" />
-                            Twitter / X
+                        <a
+                            href="https://twitter.com/reikitamashi"
+                            target="_blank"
+                            class="flex items-center gap-2 text-sm text-white/70 hover:text-white transition"
+                        >
+                            <x-si-x class="size-5 fill-current" />
                         </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center gap-2 hover:text-white transition">
-                            <x-si-instagram class="size-4 fill-current" />
-                            Instagram
+                        <a
+                            href="https://www.instagram.com/reikitamashioficial/"
+                            target="_blank"
+                            class="flex items-center gap-2 text-sm text-white/70 hover:text-white transition"
+                        >
+                            <x-si-instagram class="size-5 fill-current" />
                         </a>
-                    </li>
-                </ul>
+                    </div>
+                </div>
+
             </div>
 
         </div>
 
         {{-- Línea inferior --}}
-        <div class="mt-10 pt-6 border-t border-gray-700 text-center text-xs text-gray-500">
+        <div class="mt-10 pt-6 border-t border-white/20 text-center text-xs text-white/40">
             © {{ date('Y') }} {{ config('app.name') }}. Todos los derechos reservados.
         </div>
     </div>
