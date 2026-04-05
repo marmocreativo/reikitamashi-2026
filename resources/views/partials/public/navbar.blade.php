@@ -20,13 +20,40 @@
 
         {{-- Links centrados (desktop) --}}
         <ul class="hidden md:flex items-center gap-6 text-sm font-medium">
-            <li><a href="#" class="text-white hover:text-accent transition">Cursos Reiki</a></li>
-            <li><a href="#" class="text-white hover:text-accent transition">Más Cursos</a></li>
-            <li><a href="#" class="text-white hover:text-accent transition">Terapias</a></li>
-            <li><a href="#" class="text-white hover:text-accent transition">Galerías</a></li>
-            <li><a href="#" class="text-white hover:text-accent transition">Historias de vida</a></li>
-            <li><a href="#" class="text-white hover:text-accent transition">Acerca de Nosotros</a></li>
-            <li><a href="#" class="text-white hover:text-accent transition">Contacto</a></li>
+            @foreach($menuPublico as $item)
+                @if($menuHijos->has($item->ID_MENU))
+                    <li class="relative" x-data="{ submenu: false }">
+                        <button
+                            @click="submenu = !submenu"
+                            @click.outside="submenu = false"
+                            class="flex items-center gap-1 text-white hover:text-accent transition"
+                        >
+                            {{ $item->MENU_ETIQUETA }}
+                            <flux:icon.chevron-down class="size-3" />
+                        </button>
+                        <ul
+                            x-show="submenu"
+                            x-cloak
+                            x-transition
+                            class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-zinc-900 rounded-lg shadow-lg py-1 text-zinc-800 dark:text-white"
+                        >
+                            @foreach($menuHijos[$item->ID_MENU] as $hijo)
+                                <li>
+                                    <a href="{{ $hijo->MENU_ENLACE }}" class="block px-4 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
+                                        {{ $hijo->MENU_ETIQUETA }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
+                @else
+                    <li>
+                        <a href="{{ $item->MENU_ENLACE }}" class="text-white hover:text-accent transition">
+                            {{ $item->MENU_ETIQUETA }}
+                        </a>
+                    </li>
+                @endif
+            @endforeach
         </ul>
 
         {{-- User dropdown + menú mobile --}}
@@ -107,13 +134,22 @@
 
             {{-- Links --}}
             <ul class="flex flex-col px-5 py-6 gap-1 text-sm font-medium flex-1 overflow-y-auto">
-                <li><a href="#" class="block py-2 px-3 rounded hover:bg-white/10 transition">Cursos Reiki</a></li>
-                <li><a href="#" class="block py-2 px-3 rounded hover:bg-white/10 transition">Más Cursos</a></li>
-                <li><a href="#" class="block py-2 px-3 rounded hover:bg-white/10 transition">Terapias</a></li>
-                <li><a href="#" class="block py-2 px-3 rounded hover:bg-white/10 transition">Galerías</a></li>
-                <li><a href="#" class="block py-2 px-3 rounded hover:bg-white/10 transition">Historias de vida</a></li>
-                <li><a href="#" class="block py-2 px-3 rounded hover:bg-white/10 transition">Acerca de Nosotros</a></li>
-                <li><a href="#" class="block py-2 px-3 rounded hover:bg-white/10 transition">Contacto</a></li>
+                @foreach($menuPublico as $item)
+                    <li>
+                        <a href="{{ $item->MENU_ENLACE }}" class="block py-2 px-3 rounded hover:bg-white/10 transition">
+                            {{ $item->MENU_ETIQUETA }}
+                        </a>
+                    </li>
+                    @if($menuHijos->has($item->ID_MENU))
+                        @foreach($menuHijos[$item->ID_MENU] as $hijo)
+                            <li>
+                                <a href="{{ $hijo->MENU_ENLACE }}" class="block py-2 px-3 pl-6 rounded hover:bg-white/10 transition text-white/80">
+                                    {{ $hijo->MENU_ETIQUETA }}
+                                </a>
+                            </li>
+                        @endforeach
+                    @endif
+                @endforeach
             </ul>
         </div>
     </div>

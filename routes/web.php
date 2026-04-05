@@ -11,6 +11,7 @@ use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\HistorialPagoController;
 use App\Http\Controllers\AdminGaleriaController;
 use App\Http\Controllers\AdminMetaDatosController;
+use App\Http\Controllers\AdminMenuController;
 
 // Rutas públicas
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -28,6 +29,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('dashboard', [AdminHomeController::class, 'index'])->name('dashboard');
+
+        // Menú
+        Route::get('menu', [AdminMenuController::class, 'index'])->name('menu.index');
+        Route::post('menu', [AdminMenuController::class, 'store'])->name('menu.store');
+        Route::patch('menu/{menu}', [AdminMenuController::class, 'update'])->name('menu.update');
+        Route::delete('menu/{menu}', [AdminMenuController::class, 'destroy'])->name('menu.destroy');
+        Route::post('menu/reordenar', [AdminMenuController::class, 'reordenar'])->name('menu.reordenar');
 
         // Categorias
         Route::get('categorias/{categoria}/hijas', [AdminCategoriasController::class, 'hijas'])->name('categorias.hijas');
