@@ -12,6 +12,9 @@ use App\Http\Controllers\HistorialPagoController;
 use App\Http\Controllers\AdminGaleriaController;
 use App\Http\Controllers\AdminMetaDatosController;
 use App\Http\Controllers\AdminMenuController;
+use App\Http\Controllers\AdminPacientesController;
+use App\Http\Controllers\AdminConsultasController;
+use App\Http\Controllers\AdminUsuariosController;
 
 // Rutas públicas
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -56,6 +59,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Metadatos de publicaciones
         Route::post('publicaciones/{publicacion}/metadatos', [AdminMetaDatosController::class, 'store'])->name('publicaciones.metadatos.store');
         Route::delete('publicaciones/{publicacion}/metadatos/{nombre}', [AdminMetaDatosController::class, 'destroy'])->name('publicaciones.metadatos.destroy');
+
+        // Pacientes / Expedientes
+        Route::resource('pacientes', AdminPacientesController::class)
+            ->parameters(['pacientes' => 'paciente']);
+
+        // Consultas anidadas bajo paciente
+        Route::post('pacientes/{paciente}/consultas', [AdminConsultasController::class, 'store'])->name('pacientes.consultas.store');
+        Route::get('pacientes/{paciente}/consultas/{consulta}/edit', [AdminConsultasController::class, 'edit'])->name('pacientes.consultas.edit');
+        Route::put('pacientes/{paciente}/consultas/{consulta}', [AdminConsultasController::class, 'update'])->name('pacientes.consultas.update');
+        Route::delete('pacientes/{paciente}/consultas/{consulta}', [AdminConsultasController::class, 'destroy'])->name('pacientes.consultas.destroy');
+
+        // Usuarios
+        Route::resource('usuarios', AdminUsuariosController::class)
+            ->parameters(['usuarios' => 'usuario'])
+            ->except(['show']);
     });
 });
 

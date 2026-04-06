@@ -80,7 +80,7 @@
                         @foreach($destacadas as $pub)
                         <a
                             href="{{ route('publicaciones.show', $pub->URL) }}"
-                            class="relative shrink-0 rounded-xl overflow-hidden group ring-2 ring-transparent hover:ring-white/70 transition-all duration-300 w-[85vw] md:w-[calc(25%-0.75rem)]"
+                            class="relative shrink-0 rounded-xl overflow-hidden group transition-all duration-300 w-[85vw] md:w-[calc(25%-0.75rem)]"
                             style="aspect-ratio: 2/3;"
                         >
                             <img
@@ -89,10 +89,10 @@
                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             >
                             {{-- Overlay título --}}
-                            <div class="absolute bottom-0 left-0 right-0 px-3 py-2 bg-primary/60">
-                                <p class="text-white text-sm font-medium leading-snug">
+                            <div class="absolute inset-0 flex items-end bg-gradient-to-b from-transparent via-primary/80 to-black/80 px-3 py-3">
+                                <h2 class="text-white text-lg text-center font-medium leading-snug w-full">
                                     {{ $pub->PUBLICACION_TITULO }}
-                                </p>
+                                </h2>
                             </div>
                         </a>
                         @endforeach
@@ -186,9 +186,9 @@
 
             {{-- Columna derecha 2/3 --}}
             <div class="w-full md:w-2/3">
-                @if($cat->publicaciones->count() > 0)
+                @if($cat->publicacionesDestacadas->count() > 0)
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    @foreach($cat->publicaciones->take(4) as $pub)
+                    @foreach($cat->publicacionesDestacadas->take(4) as $pub)
                     <a
                         href="{{ route('publicaciones.show', $pub->URL) }}"
                         class="relative rounded-xl overflow-hidden group ring-2 ring-transparent hover:ring-primary/50 transition-all duration-300"

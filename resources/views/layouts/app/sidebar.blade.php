@@ -15,17 +15,23 @@
                 <flux:sidebar.item icon="squares-2x2" :href="route('admin.dashboard')" :current="request()->routeIs('admin.dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                 </flux:sidebar.item>
+                <flux:sidebar.item icon="bars-3" :href="route('admin.menu.index')" :current="request()->routeIs('admin.menu.*')" wire:navigate>
+                    {{ __('Menú') }}
+                </flux:sidebar.item>
                 <flux:sidebar.item icon="folder" :href="route('admin.categorias.index')" :current="request()->routeIs('admin.categorias.*')" wire:navigate>
                     {{ __('Categorías') }}
                 </flux:sidebar.item>
                 <flux:sidebar.item icon="document-text" :href="route('admin.publicaciones.index')" :current="request()->routeIs('admin.publicaciones.*')" wire:navigate>
                     {{ __('Publicaciones') }}
                 </flux:sidebar.item>
-                <flux:sidebar.item icon="bars-3" :href="route('admin.menu.index')" :current="request()->routeIs('admin.menu.*')" wire:navigate>
-                    {{ __('Menú') }}
+                <flux:sidebar.item icon="clipboard-document-list" :href="route('admin.pacientes.index')" :current="request()->routeIs('admin.pacientes.*')" wire:navigate>
+                    {{ __('Expedientes') }}
                 </flux:sidebar.item>
                 <flux:sidebar.item icon="banknotes" :href="route('historial_pagos.index')" :current="request()->routeIs('historial_pagos.*')" wire:navigate>
                     {{ __('Historial de pagos') }}
+                </flux:sidebar.item>
+                <flux:sidebar.item icon="users" :href="route('admin.usuarios.index')" :current="request()->routeIs('admin.usuarios.*')" wire:navigate>
+                    {{ __('Usuarios') }}
                 </flux:sidebar.item>
             </flux:sidebar.group>
 
@@ -33,8 +39,8 @@
 
             <flux:sidebar.nav>
 
-                <flux:sidebar.item icon="book-open-text" :href="route('home')" target="_blank">
-                    {{ __('Inicio') }}
+                <flux:sidebar.item icon="arrow-top-right-on-square" :href="route('home')" target="_blank">
+                    {{ __('Ver sitio') }}
                 </flux:sidebar.item>
             </flux:sidebar.nav>
 
