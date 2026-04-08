@@ -216,6 +216,14 @@
         {{-- Visibilidad — siempre visible, campo oculto --}}
         <input type="hidden" name="VISIBLE" value="visible" />
 
+        {{-- Destacada --}}
+        <flux:field>
+            <flux:label>Destacada</flux:label>
+            <flux:select name="DESTACADA">
+                <option value="0" @selected(!old('DESTACADA', $categoria?->DESTACADA ?? false))>No</option>
+                <option value="1" @selected((bool) old('DESTACADA', $categoria?->DESTACADA ?? false))>Sí</option>
+            </flux:select>
+        </flux:field>
         {{-- Estado --}}
         <flux:field>
             <flux:label>Estado</flux:label>

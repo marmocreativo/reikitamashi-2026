@@ -80,17 +80,27 @@
                         @foreach($destacadas as $pub)
                         <a
                             href="{{ route('publicaciones.show', $pub->URL) }}"
-                            class="relative shrink-0 rounded-xl overflow-hidden group transition-all duration-300 w-[85vw] md:w-[calc(25%-0.75rem)]"
+                            class="relative shrink-0 rounded-xl overflow-hidden group transition-all duration-300 w-[85vw] md:w-[calc(25%-0.75rem)] hover:scale-[1.02]"
                             style="aspect-ratio: 2/3;"
                         >
                             <img
                                 src="{{ $pub->IMAGEN !== 'default.jpg' ? asset('storage/img/publicaciones/' . $pub->IMAGEN) : asset('img/default.jpg') }}"
                                 alt="{{ $pub->PUBLICACION_TITULO }}"
-                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                             >
                             {{-- Overlay título --}}
-                            <div class="absolute inset-0 flex items-end bg-gradient-to-b from-transparent via-primary/80 to-black/80 px-3 py-3">
-                                <h2 class="text-white text-lg text-center font-medium leading-snug w-full">
+                            <div class="absolute bottom-0 left-0 w-full h-1/2 flex flex-col justify-end items-center text-center 
+                                        bg-gradient-to-t from-black/90 via-black/70 to-transparent px-4 py-4">
+
+                                {{-- Logo --}}
+                                <img 
+                                    src="{{ asset('menu_logo.png') }}" 
+                                    alt="Logo"
+                                    class="h-[50px] mb-2 object-contain"
+                                >
+
+                                {{-- Título --}}
+                                <h2 class="text-white text-xl md:text-2xl font-semibold leading-snug">
                                     {{ $pub->PUBLICACION_TITULO }}
                                 </h2>
                             </div>
@@ -116,7 +126,7 @@
             {{-- Columna imagen 1/3 --}}
             <div class="w-full md:w-1/3 shrink-0">
                 <img
-                    src="https://placehold.co/600x700"
+                    src="{{ asset('acerca_de.png') }}"
                     alt="Tamashi - Centro Holístico"
                     class="w-full h-auto rounded-2xl object-cover shadow-lg"
                 >

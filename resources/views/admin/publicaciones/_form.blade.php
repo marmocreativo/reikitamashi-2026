@@ -236,6 +236,15 @@
             <flux:error name="FECHA_PUBLICACION" />
         </flux:field>
 
+        {{-- Destacada --}}
+        <flux:field>
+            <flux:label>Destacada</flux:label>
+            <flux:select name="DESTACADA">
+                <option value="0" @selected(!(bool) old('DESTACADA', $publicacion?->DESTACADA ?? false))>No</option>
+                <option value="1" @selected((bool) old('DESTACADA', $publicacion?->DESTACADA ?? false))>Sí</option>
+            </flux:select>
+        </flux:field>
+
         <input type="hidden" name="ORDEN" value="{{ old('ORDEN', $publicacion?->ORDEN ?? 0) }}" />
 
         {{-- Árbol de categorías --}}

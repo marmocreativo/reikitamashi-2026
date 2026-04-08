@@ -45,6 +45,14 @@
                 @if($buscar || $curso || $anio)
                     <flux:button href="{{ route('historial_pagos.index') }}" size="sm" variant="ghost" icon="x-mark" wire:navigate>Limpiar</flux:button>
                 @endif
+                <flux:button
+                    href="{{ route('historial_pagos.exportar', array_filter(['buscar' => $buscar, 'curso' => $curso, 'anio' => $anio])) }}"
+                    size="sm"
+                    variant="ghost"
+                    icon="arrow-down-tray"
+                >
+                    Exportar Excel
+                </flux:button>
             </div>
         </form>
 
@@ -126,45 +134,55 @@
                         <flux:text class="text-zinc-400 text-xs">Completa los datos del nuevo registro</flux:text>
                     </div>
 
-                    <form method="POST" action="{{ route('historial_pagos.store') }}" class="flex flex-col gap-3">
+                    <form method="POST" action="{{ route('historial_pagos.store') }}" class="flex flex-col gap-4">
                         @csrf
 
-                        <flux:field>
-                            <flux:label>Nombre <span class="text-red-500">*</span></flux:label>
-                            <flux:input name="NOMBRE" value="{{ old('NOMBRE') }}" required />
-                            <flux:error name="NOMBRE" />
-                        </flux:field>
+                        {{-- 1. Nombre | Apellidos --}}
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <flux:field>
+                                <flux:label>Nombre <span class="text-red-500">*</span></flux:label>
+                                <flux:input name="NOMBRE" value="{{ old('NOMBRE') }}" required />
+                                <flux:error name="NOMBRE" />
+                            </flux:field>
 
-                        <flux:field>
-                            <flux:label>Apellidos <span class="text-red-500">*</span></flux:label>
-                            <flux:input name="APELLIDOS" value="{{ old('APELLIDOS') }}" required />
-                            <flux:error name="APELLIDOS" />
-                        </flux:field>
+                            <flux:field>
+                                <flux:label>Apellidos <span class="text-red-500">*</span></flux:label>
+                                <flux:input name="APELLIDOS" value="{{ old('APELLIDOS') }}" required />
+                                <flux:error name="APELLIDOS" />
+                            </flux:field>
+                        </div>
 
+                        {{-- 2. Curso --}}
                         <flux:field>
                             <flux:label>Curso <span class="text-red-500">*</span></flux:label>
                             <flux:input name="CURSO" value="{{ old('CURSO') }}" required />
                             <flux:error name="CURSO" />
                         </flux:field>
 
-                        <flux:field>
-                            <flux:label>Importe <span class="text-red-500">*</span></flux:label>
-                            <flux:input type="number" step="0.01" name="IMPORTE" value="{{ old('IMPORTE') }}" required />
-                            <flux:error name="IMPORTE" />
-                        </flux:field>
+                        {{-- 3. Importe | Fecha --}}
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <flux:field>
+                                <flux:label>Importe <span class="text-red-500">*</span></flux:label>
+                                <flux:input type="number" step="0.01" name="IMPORTE" value="{{ old('IMPORTE') }}" required />
+                                <flux:error name="IMPORTE" />
+                            </flux:field>
 
-                        <flux:field>
-                            <flux:label>Fecha <span class="text-red-500">*</span></flux:label>
-                            <flux:input type="date" name="FECHA" value="{{ old('FECHA', date('Y-m-d')) }}" required />
-                            <flux:error name="FECHA" />
-                        </flux:field>
+                            <flux:field>
+                                <flux:label>Fecha de pago <span class="text-red-500">*</span></flux:label>
+                                <flux:input type="date" name="FECHA" value="{{ old('FECHA', date('Y-m-d')) }}" required />
+                                <flux:error name="FECHA" />
+                            </flux:field>
+                        </div>
 
-                        <div class="grid grid-cols-2 gap-3">
+                        {{-- 4. Mes | Año --}}
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <flux:field>
                                 <flux:label>Mes <span class="text-red-500">*</span></flux:label>
                                 <flux:select name="MES">
                                     @foreach(['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'] as $mes)
-                                        <flux:select.option value="{{ $mes }}" :selected="old('MES', now()->translatedFormat('F')) === $mes">{{ $mes }}</flux:select.option>
+                                        <flux:select.option value="{{ $mes }}" :selected="old('MES', now()->translatedFormat('F')) === $mes">
+                                            {{ $mes }}
+                                        </flux:select.option>
                                     @endforeach
                                 </flux:select>
                                 <flux:error name="MES" />
@@ -177,12 +195,26 @@
                             </flux:field>
                         </div>
 
+                        {{-- 5. Forma de pago --}}
+                        <flux:field>
+                            <flux:label>Forma de pago <span class="text-red-500">*</span></flux:label>
+                            <flux:select name="FORMA_PAGO" required>
+                                <flux:select.option value="">Selecciona una opción</flux:select.option>
+                                <flux:select.option value="Depósito" :selected="old('FORMA_PAGO') === 'Depósito'">Depósito</flux:select.option>
+                                <flux:select.option value="Efectivo" :selected="old('FORMA_PAGO') === 'Efectivo'">Efectivo</flux:select.option>
+                                <flux:select.option value="Otro" :selected="old('FORMA_PAGO') === 'Otro'">Otro</flux:select.option>
+                            </flux:select>
+                            <flux:error name="FORMA_PAGO" />
+                        </flux:field>
+
+                        {{-- 6. Notas --}}
                         <flux:field>
                             <flux:label>Notas</flux:label>
                             <flux:textarea name="NOTAS" rows="2">{{ old('NOTAS') }}</flux:textarea>
                             <flux:error name="NOTAS" />
                         </flux:field>
 
+                        {{-- Botón --}}
                         <flux:button type="submit" variant="primary" icon="plus" class="w-full">
                             Registrar pago
                         </flux:button>

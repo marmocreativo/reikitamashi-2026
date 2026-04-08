@@ -19,6 +19,7 @@ class HistorialPago extends Model
         'ANIO',
         'NOTAS',
         'IMPORTE',
+        'FORMA_PAGO',
     ];
 
     protected $casts = [

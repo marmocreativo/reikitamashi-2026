@@ -25,6 +25,7 @@ Route::post('contacto', [ContactoController::class, 'send'])->name('contacto.sen
 // Rutas protegidas
 Route::middleware(['auth', 'verified'])->group(function () {
 
+    Route::get('historial_pagos/exportar', [HistorialPagoController::class, 'exportar'])->name('historial_pagos.exportar');
     Route::get('historial_pagos', [HistorialPagoController::class, 'index'])->name('historial_pagos.index');
     Route::post('historial_pagos', [HistorialPagoController::class, 'store'])->name('historial_pagos.store');
     Route::get('historial_pagos/{id}', [HistorialPagoController::class, 'show'])->name('historial_pagos.show');

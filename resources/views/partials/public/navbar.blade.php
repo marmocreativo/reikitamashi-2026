@@ -85,7 +85,6 @@
                         </form>
                     @else
                         <flux:menu.item href="{{ route('login') }}" icon="arrow-right-end-on-rectangle">Iniciar sesión</flux:menu.item>
-                        <flux:menu.item href="{{ route('register') }}" icon="user-plus">Registrarse</flux:menu.item>
                     @endauth
                 </flux:menu>
             </flux:dropdown>

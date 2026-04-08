@@ -163,12 +163,13 @@ class AdminPublicacionesController extends Controller
         ]);
 
         $data['FECHA_ACTUALIZACION'] = now();
-        $data['DESTACADA'] = $request->boolean('DESTACADA');
         $data['FECHA_PUBLICACION'] = $data['FECHA_PUBLICACION'] ?? $publicacion->FECHA_PUBLICACION ?? now();
 
         if ($request->hasFile('imagen')) {
             $data['IMAGEN'] = $this->procesarImagen($request->file('imagen'), $publicacion->IMAGEN);
         }
+
+        $data['DESTACADA'] = $request->boolean('DESTACADA');
 
         $publicacion->update($data);
 
