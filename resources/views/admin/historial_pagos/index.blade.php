@@ -66,65 +66,92 @@
 
             {{-- Columna izquierda: tabla --}}
             <div class="lg:col-span-2 flex flex-col gap-3">
-                <div class="overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
-                    <table class="w-full text-sm">
-                        <thead class="bg-zinc-50 text-left text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
-                            <tr>
-                                <th class="px-3 py-2">Nombre</th>
-                                <th class="px-3 py-2">Curso</th>
-                                <th class="px-3 py-2">Mes / Año</th>
-                                <th class="px-3 py-2">Fecha</th>
-                                <th class="px-3 py-2 text-right">Importe</th>
-                                <th class="px-3 py-2"></th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-zinc-100 bg-white dark:divide-zinc-700/60 dark:bg-zinc-900">
-                            @forelse($pagos as $pago)
-                                <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
-                                    <td class="px-3 py-2">
-                                        <a href="{{ route('historial_pagos.show', $pago->ID) }}"
-                                            class="font-medium text-zinc-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">
-                                            {{ $pago->nombre_completo }}
-                                        </a>
-                                    </td>
-                                    <td class="px-3 py-2 text-zinc-600 dark:text-zinc-300 text-xs">{{ $pago->CURSO }}</td>
-                                    <td class="px-3 py-2 text-zinc-500 text-xs">{{ $pago->MES }} {{ $pago->ANIO }}</td>
-                                    <td class="px-3 py-2 text-zinc-500 text-xs">{{ \Carbon\Carbon::parse($pago->FECHA)->format('d/m/Y') }}</td>
-                                    <td class="px-3 py-2 text-right font-medium text-zinc-700 dark:text-zinc-200 text-xs">
-                                        ${{ number_format($pago->IMPORTE, 2) }}
-                                    </td>
-                                    <td class="px-3 py-2 text-right">
-                                        <div class="flex items-center justify-end gap-1">
-                                            <flux:button
-                                                size="sm"
-                                                variant="ghost"
-                                                icon="eye"
-                                                href="{{ route('historial_pagos.show', $pago->ID) }}"
-                                                wire:navigate
-                                                title="Ver detalles"
-                                            />
-                                            <form method="POST" action="{{ route('historial_pagos.destroy', $pago->ID) }}"
-                                                onsubmit="return confirm('¿Eliminar este registro?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <flux:button type="submit" variant="ghost" size="sm" icon="trash" class="text-red-400 hover:text-red-600" />
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="px-4 py-10 text-center text-zinc-400">
-                                        No hay registros que mostrar.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
 
-                <div>{{ $pagos->links() }}</div>
+            {{-- Vista tabla — solo en pantallas medianas+ --}}
+            <div class="hidden md:block overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
+                <table class="w-full text-sm">
+                    <thead class="bg-zinc-50 text-left text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+                        <tr>
+                            <th class="px-3 py-2">Nombre</th>
+                            <th class="px-3 py-2">Curso</th>
+                            <th class="px-3 py-2">Mes / Año</th>
+                            <th class="px-3 py-2">Fecha</th>
+                            <th class="px-3 py-2 text-right">Importe</th>
+                            <th class="px-3 py-2"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-zinc-100 bg-white dark:divide-zinc-700/60 dark:bg-zinc-900">
+                        @forelse($pagos as $pago)
+                            <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
+                                <td class="px-3 py-2">
+                                    <a href="{{ route('historial_pagos.show', $pago->ID) }}"
+                                        class="font-medium text-zinc-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">
+                                        {{ $pago->nombre_completo }}
+                                    </a>
+                                </td>
+                                <td class="px-3 py-2 text-zinc-600 dark:text-zinc-300 text-xs">{{ $pago->CURSO }}</td>
+                                <td class="px-3 py-2 text-zinc-500 text-xs">{{ $pago->MES }} {{ $pago->ANIO }}</td>
+                                <td class="px-3 py-2 text-zinc-500 text-xs">{{ \Carbon\Carbon::parse($pago->FECHA)->format('d/m/Y') }}</td>
+                                <td class="px-3 py-2 text-right font-medium text-zinc-700 dark:text-zinc-200 text-xs">
+                                    ${{ number_format($pago->IMPORTE, 2) }}
+                                </td>
+                                <td class="px-3 py-2 text-right">
+                                    <div class="flex items-center justify-end gap-1">
+                                        <flux:button size="sm" variant="ghost" icon="eye"
+                                            href="{{ route('historial_pagos.show', $pago->ID) }}"
+                                            wire:navigate title="Ver detalles" />
+                                        <form method="POST" action="{{ route('historial_pagos.destroy', $pago->ID) }}"
+                                            onsubmit="return confirm('¿Eliminar este registro?')">
+                                            @csrf @method('DELETE')
+                                            <flux:button type="submit" variant="ghost" size="sm" icon="trash" class="text-red-400 hover:text-red-600" />
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="px-4 py-10 text-center text-zinc-400">
+                                    No hay registros que mostrar.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
+
+            {{-- Vista lista — solo en móvil --}}
+            <div class="flex flex-col gap-2 md:hidden">
+                @forelse($pagos as $pago)
+                    <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-3 flex items-start justify-between gap-3">
+                        <div class="flex flex-col gap-0.5 min-w-0">
+                            <a href="{{ route('historial_pagos.show', $pago->ID) }}"
+                                class="font-medium text-zinc-800 dark:text-white hover:text-blue-600 transition truncate">
+                                {{ $pago->nombre_completo }}
+                            </a>
+                            <span class="text-xs text-zinc-500 truncate">{{ $pago->CURSO }}</span>
+                            <span class="text-xs text-zinc-400">{{ $pago->MES }} {{ $pago->ANIO }} · {{ \Carbon\Carbon::parse($pago->FECHA)->format('d/m/Y') }}</span>
+                        </div>
+                        <div class="flex flex-col items-end gap-2 shrink-0">
+                            <span class="font-semibold text-zinc-700 dark:text-zinc-200 text-sm">${{ number_format($pago->IMPORTE, 2) }}</span>
+                            <div class="flex gap-1">
+                                <flux:button size="sm" variant="ghost" icon="eye"
+                                    href="{{ route('historial_pagos.show', $pago->ID) }}"
+                                    wire:navigate title="Ver" />
+                                <form method="POST" action="{{ route('historial_pagos.destroy', $pago->ID) }}"
+                                    onsubmit="return confirm('¿Eliminar este registro?')">
+                                    @csrf @method('DELETE')
+                                    <flux:button type="submit" variant="ghost" size="sm" icon="trash" class="text-red-400 hover:text-red-600" />
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="py-10 text-center text-zinc-400 text-sm">No hay registros que mostrar.</div>
+                @endforelse
+            </div>
+
+            <div>{{ $pagos->links() }}</div>
+        </div>
 
             {{-- Columna derecha: formulario --}}
             <div>

@@ -16,6 +16,9 @@
                 href="{{ route('admin.pacientes.edit', $paciente) }}" wire:navigate>
                 Editar datos
             </flux:button>
+            <flux:button icon="printer" variant="ghost" size="sm" onclick="window.print()">
+                Imprimir
+            </flux:button>
         </div>
 
         @if(session('success'))
@@ -198,5 +201,152 @@
             </div>
         </form>
     </flux:modal>
+<style>
+@media print {
+    /* Ocultar elementos de UI */
+    nav, aside, [data-flux-sidebar], flux-sidebar, .flux-sidebar,
+    header, footer, [data-flux-button], [data-flux-breadcrumbs],
+    [data-flux-modal], dialog, .flex.items-center.justify-between > [data-flux-button] {
+        display: none !important;
+    }
 
+    body {
+        font-size: 10pt;
+        color: #000 !important;
+        background: #fff !important;
+    }
+
+    .flex.h-full.w-full {
+        padding: 0 !important;
+        gap: 0.5rem !important;
+    }
+
+    /* Layout una columna */
+    .flex.gap-6.items-start {
+        display: block !important;
+    }
+
+    /* ── Datos personales: fila horizontal compacta ── */
+    .w-1\/4 {
+        width: 100% !important;
+        padding: 0.5rem 0.75rem !important;
+        margin-bottom: 0.75rem;
+        border: 1px solid #ccc !important;
+        border-radius: 6px;
+    }
+
+    .w-1\/4 [class*="space-y"] {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 0.25rem 1.5rem !important;
+    }
+
+    .w-1\/4 [class*="space-y"] > div {
+        min-width: 140px;
+    }
+
+    .w-1\/4 flux\:heading,
+    .w-1\/4 [data-flux-heading] {
+        font-size: 8pt !important;
+        margin-bottom: 0.35rem !important;
+    }
+
+    .w-1\/4 span.text-xs {
+        font-size: 7pt !important;
+        color: #666 !important;
+    }
+
+    .w-1\/4 span.text-zinc-800 {
+        font-size: 9pt !important;
+    }
+
+    /* ── Consultas: tabla compacta ── */
+    .flex-1.min-w-0 {
+        width: 100% !important;
+    }
+
+    /* Ocultar encabezado "Consultas + botón nueva" */
+    .flex-1.min-w-0 > .flex.items-center.justify-between {
+        display: none !important;
+    }
+
+    /* Ocultar línea de tiempo */
+    .flex.flex-col.items-center {
+        display: none !important;
+    }
+
+    /* Convertir timeline en tabla */
+    .flex-1.min-w-0 > .relative.flex.gap-4 {
+        display: table-row !important;
+    }
+
+    .flex-1.min-w-0 {
+        display: table !important;
+        width: 100% !important;
+        border-collapse: collapse;
+    }
+
+    /* Cada tarjeta de consulta como fila de tabla */
+    .mb-6.flex-1.rounded-xl {
+        display: table-cell !important;
+        border: none !important;
+        border-bottom: 1px solid #ddd !important;
+        padding: 0.4rem 0.5rem !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+
+    /* Fecha en negrita, pequeña */
+    .mb-6.flex-1 .flex.items-center.justify-between {
+        margin-bottom: 0.2rem !important;
+    }
+
+    .mb-6.flex-1 .text-sm.font-semibold {
+        font-size: 9pt !important;
+        font-weight: bold;
+    }
+
+    /* Ocultar botones editar/eliminar dentro de consultas */
+    .mb-6.flex-1 .flex.gap-1 {
+        display: none !important;
+    }
+
+    /* Etiquetas de sección (Síntomas, Tratamiento, Notas) */
+    .space-y-3 .text-xs.font-medium {
+        font-size: 7pt !important;
+        color: #555 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    .space-y-3 p {
+        font-size: 9pt !important;
+        margin: 0 0 0.2rem 0 !important;
+        color: #000 !important;
+    }
+
+    .space-y-3 {
+        gap: 0.2rem !important;
+    }
+
+    /* Encabezado de tabla simulado */
+    .flex-1.min-w-0::before {
+        content: "Fecha  |  Síntomas / Tratamiento / Notas";
+        display: table-caption !important;
+        font-size: 8pt;
+        font-weight: bold;
+        text-align: left;
+        padding: 0.3rem 0.5rem;
+        background: #f0f0f0;
+        border: 1px solid #ccc;
+        border-bottom: 2px solid #999;
+        caption-side: top;
+    }
+
+    @page {
+        margin: 1.5cm;
+    }
+}
+</style>
 </x-layouts::app>

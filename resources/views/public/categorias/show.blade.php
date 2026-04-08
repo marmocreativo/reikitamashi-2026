@@ -27,11 +27,7 @@
                 <h1 class="text-3xl md:text-5xl font-bold text-white drop-shadow" style="font-family: 'Georgia', serif;">
                     {{ $categoria->CATEGORIA_NOMBRE }}
                 </h1>
-                @if($categoria->CATEGORIA_DESCRIPCION)
-                <div class="text-white/80 text-sm leading-relaxed max-w-2xl line-clamp-3">
-                    {!! strip_tags($categoria->CATEGORIA_DESCRIPCION) !!}
-                </div>
-                @endif
+               
             </div>
 
         </div>
@@ -42,7 +38,11 @@
     ============================================ --}}
     <section class="py-16 bg-background">
         <div class="max-w-6xl mx-auto px-6">
-
+             @if($categoria->CATEGORIA_DESCRIPCION)
+                <div class="text-sm">
+                    {!! $categoria->CATEGORIA_DESCRIPCION !!}
+                </div>
+            @endif
             {{-- Si hay subcategorías --}}
             @if($hijas->isNotEmpty())
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Format;
@@ -12,15 +13,13 @@ use Intervention\Image\Format;
 
 class AdminCategoriasController extends Controller
 {
-    // Configuración de imagen — fácil de cambiar después
-    const IMG_WIDTH  = 1200;
+    const IMG_WIDTH  = 800;
     const IMG_HEIGHT = 1200;
-    const IMG_PATH   = 'public/img/categorias';
+    const IMG_PATH   = 'img/categorias';
 
     private function procesarImagen($archivo, ?string $nombreActual = null): string
     {
         $nombreArchivo = 'categoria-' . Str::uuid() . '.webp';
-        $ruta = storage_path('app/' . self::IMG_PATH . '/' . $nombreArchivo);
 
         $manager = ImageManager::usingDriver(Driver::class);
 
@@ -28,13 +27,10 @@ class AdminCategoriasController extends Controller
             ->cover(self::IMG_WIDTH, self::IMG_HEIGHT)
             ->encodeUsingFormat(Format::WEBP, quality: 85);
 
-        $encoded->save($ruta);
+        Storage::disk('public')->put(self::IMG_PATH . '/' . $nombreArchivo, $encoded->toString());
 
         if ($nombreActual && $nombreActual !== 'default.jpg') {
-            $rutaAnterior = storage_path('app/' . self::IMG_PATH . '/' . $nombreActual);
-            if (file_exists($rutaAnterior)) {
-                unlink($rutaAnterior);
-            }
+            Storage::disk('public')->delete(self::IMG_PATH . '/' . $nombreActual);
         }
 
         return $nombreArchivo;
@@ -86,28 +82,28 @@ class AdminCategoriasController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'CATEGORIA_NOMBRE'       => 'required|string|max:255',
-            'URL'                    => 'required|string|max:255|unique:categorias,URL',
-            'CATEGORIA_DESCRIPCION'  => 'nullable|string',
-            'CATEGORIA_PADRE'        => 'nullable|integer',
-            'VISIBLE'                => 'required|in:visible,invisible',
-            'TIPO'                   => 'required|in:pagina,curso_reiki,cursos,terapia,galeria,promocion,egresado',
-            'ESTADO'                 => 'required|in:activo,inactivo',
-            'ORDEN'                  => 'nullable|integer',
+            'CATEGORIA_NOMBRE'      => 'required|string|max:255',
+            'URL'                   => 'required|string|max:255|unique:categorias,URL',
+            'CATEGORIA_DESCRIPCION' => 'nullable|string',
+            'CATEGORIA_PADRE'       => 'nullable|integer',
+            'VISIBLE'               => 'required|in:visible,invisible',
+            'TIPO'                  => 'required|in:pagina,curso_reiki,cursos,terapia,galeria,promocion,egresado',
+            'ESTADO'                => 'required|in:activo,inactivo',
+            'ORDEN'                 => 'nullable|integer',
             'DESTACADA'             => 'boolean',
-            'imagen'                 => 'nullable|image|max:5120',
+            'imagen'                => 'nullable|image|max:5120',
         ]);
 
         $data['CATEGORIA_PADRE'] = $data['CATEGORIA_PADRE'] ?? 0;
         $data['CATEGORIA_NIVEL'] = $data['CATEGORIA_PADRE'] > 0 ? 2 : 1;
-        $data['DESTACADA'] = $request->boolean('DESTACADA');
+        $data['DESTACADA']       = $request->boolean('DESTACADA');
         $data['IMAGEN']          = 'default.jpg';
 
         if ($request->hasFile('imagen')) {
             $data['IMAGEN'] = $this->procesarImagen($request->file('imagen'));
         }
 
-        $categoria = Categoria::create($data);
+        Categoria::create($data);
 
         return redirect()
             ->route('admin.categorias.index')
@@ -124,23 +120,24 @@ class AdminCategoriasController extends Controller
     public function update(Request $request, Categoria $categoria)
     {
         $data = $request->validate([
-            'CATEGORIA_NOMBRE'       => 'required|string|max:255',
-            'URL'                    => 'required|string|max:255|unique:categorias,URL,' . $categoria->ID_CATEGORIA . ',ID_CATEGORIA',
-            'CATEGORIA_DESCRIPCION'  => 'nullable|string',
-            'VISIBLE'                => 'required|in:visible,invisible',
-            'TIPO'                   => 'required|in:pagina,curso_reiki,cursos,terapia,galeria,promocion,egresado',
-            'ESTADO'                 => 'required|in:activo,inactivo',
-            'ORDEN'                  => 'nullable|integer',
+            'CATEGORIA_NOMBRE'      => 'required|string|max:255',
+            'URL'                   => 'required|string|max:255|unique:categorias,URL,' . $categoria->ID_CATEGORIA . ',ID_CATEGORIA',
+            'CATEGORIA_DESCRIPCION' => 'nullable|string',
+            'VISIBLE'               => 'required|in:visible,invisible',
+            'TIPO'                  => 'required|in:pagina,curso_reiki,cursos,terapia,galeria,promocion,egresado',
+            'ESTADO'                => 'required|in:activo,inactivo',
+            'ORDEN'                 => 'nullable|integer',
             'DESTACADA'             => 'boolean',
-            'imagen'                 => 'nullable|image|max:5120',
+            'imagen'                => 'nullable|image|max:5120',
         ]);
+
+        $data['DESTACADA'] = $request->boolean('DESTACADA');
 
         if ($request->hasFile('imagen')) {
             $data['IMAGEN'] = $this->procesarImagen($request->file('imagen'), $categoria->IMAGEN);
         }
 
         $categoria->update($data);
-        $data['DESTACADA'] = $request->boolean('DESTACADA');
 
         return redirect()
             ->route('admin.categorias.index')
@@ -154,10 +151,7 @@ class AdminCategoriasController extends Controller
         }
 
         if ($categoria->IMAGEN !== 'default.jpg') {
-            $ruta = storage_path('app/' . self::IMG_PATH . '/' . $categoria->IMAGEN);
-            if (file_exists($ruta)) {
-                unlink($ruta);
-            }
+            Storage::disk('public')->delete(self::IMG_PATH . '/' . $categoria->IMAGEN);
         }
 
         $categoria->delete();

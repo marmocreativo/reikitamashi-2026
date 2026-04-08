@@ -44,7 +44,7 @@
                 src="{{ asset('storage/img/publicaciones/' . $publicacion->IMAGEN) }}"
                 alt="{{ $publicacion->PUBLICACION_TITULO }}"
                 class="w-full rounded-xl object-cover shadow-md"
-                style="aspect-ratio: 3/4;"
+                style="aspect-ratio: 2/3;"
             >
             @endif
 

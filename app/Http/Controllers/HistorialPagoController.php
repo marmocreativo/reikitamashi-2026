@@ -53,6 +53,7 @@ class HistorialPagoController extends Controller
             'NOTAS'     => 'nullable|string',
             'FORMA_PAGO'     => 'required|string|max:150',
         ]);
+        $data['NOTAS'] = $data['NOTAS'] ?? '';
 
         HistorialPago::create($data);
 

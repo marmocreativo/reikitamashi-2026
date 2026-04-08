@@ -91,7 +91,7 @@
 
             {{-- Botón hamburguesa (mobile) --}}
             <button
-                class="md:hidden p-2 rounded text-primary hover:text-accent transition"
+                class="md:hidden p-2 rounded text-white hover:text-accent transition"
                 @click="open = !open"
                 :aria-expanded="open"
             >
