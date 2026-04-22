@@ -33,10 +33,8 @@
 
         {{-- Barra de herramientas --}}
         <form method="GET" action="{{ route('admin.publicaciones.index') }}">
-
             <div class="flex flex-wrap items-center gap-2">
 
-                {{-- Buscador --}}
                 <div class="flex-1 min-w-48">
                     <flux:input
                         name="buscar"
@@ -47,7 +45,6 @@
                     />
                 </div>
 
-                {{-- Filtro tipo --}}
                 <flux:select name="tipo" size="sm" class="w-44" placeholder="Todos los tipos">
                     <flux:select.option value="">Todos los tipos</flux:select.option>
                     @foreach(\App\Models\Publicacion::TIPOS as $t)
@@ -57,14 +54,12 @@
                     @endforeach
                 </flux:select>
 
-                {{-- Filtro estado --}}
                 <flux:select name="estado" size="sm" class="w-40" placeholder="Todos los estados">
                     <flux:select.option value="">Todos los estados</flux:select.option>
                     <flux:select.option value="activo" :selected="$estado === 'activo'">Activo</flux:select.option>
                     <flux:select.option value="inactivo" :selected="$estado === 'inactivo'">Inactivo</flux:select.option>
                 </flux:select>
 
-                {{-- Filtro categoría --}}
                 <flux:select name="categoria" size="sm" class="w-52" placeholder="Todas las categorías">
                     <flux:select.option value="">Todas las categorías</flux:select.option>
                     @foreach($categorias as $cat)
@@ -89,7 +84,6 @@
 
                 <div class="flex-1"></div>
 
-                {{-- Volver a categoría --}}
                 @if($categoria)
                     <flux:button
                         href="{{ route('admin.categorias.hijas', $categoria) }}"
@@ -100,7 +94,6 @@
                     >Volver</flux:button>
                 @endif
 
-                {{-- Nueva publicación --}}
                 <flux:button
                     href="{{ route('admin.publicaciones.create') }}"
                     size="sm"
@@ -112,6 +105,14 @@
                 </flux:button>
             </div>
         </form>
+
+        {{-- Aviso modo reordenamiento --}}
+        @if($modoReorden)
+            <div class="flex items-center gap-2 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 px-4 py-2 text-sm text-amber-700 dark:text-amber-300">
+                <flux:icon.arrows-up-down class="size-4 shrink-0" />
+                <span>Modo reordenamiento activo — arrastra las filas para cambiar el orden. Los cambios se guardan automáticamente.</span>
+            </div>
+        @endif
 
         {{-- Contexto de categoría activa --}}
         @if($categoria)
@@ -139,6 +140,9 @@
             <table class="w-full text-sm">
                 <thead class="bg-zinc-50 text-left text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
                     <tr>
+                        @if($modoReorden)
+                            <th class="px-3 py-2 w-6"></th>
+                        @endif
                         <th class="px-3 py-2">Imagen</th>
                         <th class="px-3 py-2">Título / URL</th>
                         <th class="px-3 py-2">Tipo</th>
@@ -149,9 +153,20 @@
                         <th class="px-3 py-2"></th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-zinc-100 bg-white dark:divide-zinc-700/60 dark:bg-zinc-900">
+                <tbody
+                    id="tabla-publicaciones"
+                    class="divide-y divide-zinc-100 bg-white dark:divide-zinc-700/60 dark:bg-zinc-900"
+                >
                     @forelse($publicaciones as $pub)
-                        <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
+                        <tr
+                            data-id="{{ $pub->ID_PUBLICACION }}"
+                            class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 {{ $modoReorden ? 'cursor-grab' : '' }}"
+                        >
+                            @if($modoReorden)
+                                <td class="px-3 py-2 text-zinc-300 dark:text-zinc-600">
+                                    <flux:icon.bars-3 class="size-4" />
+                                </td>
+                            @endif
 
                             <td class="px-3 py-2">
                                 <img
@@ -182,7 +197,9 @@
                                 @endif
                             </td>
 
-                            <td class="px-3 py-2 text-center text-xs text-zinc-500">{{ $pub->ORDEN }}</td>
+                            <td class="px-3 py-2 text-center text-xs text-zinc-500 orden-badge">
+                                {{ $pub->ORDEN }}
+                            </td>
 
                             <td class="px-3 py-2 text-center">
                                 <form action="{{ route('admin.publicaciones.destacada', $pub) }}" method="POST">
@@ -230,7 +247,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="px-4 py-10 text-center text-zinc-400">
+                            <td colspan="{{ $modoReorden ? 9 : 8 }}" class="px-4 py-10 text-center text-zinc-400">
                                 No se encontraron publicaciones.
                             </td>
                         </tr>
@@ -239,10 +256,55 @@
             </table>
         </div>
 
-        {{-- Paginación --}}
-        <div>
-            {{ $publicaciones->links() }}
-        </div>
+        {{-- Paginación (solo cuando no estamos en modo reorden) --}}
+        @if(!$modoReorden)
+            <div>
+                {{ $publicaciones->links() }}
+            </div>
+        @endif
 
     </div>
+
+    @if($modoReorden)
+        @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.3/Sortable.min.js"></script>
+        <script>
+        window.csrfToken = '{{ csrf_token() }}';
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const tbody = document.getElementById('tabla-publicaciones');
+            if (!tbody) return;
+
+            Sortable.create(tbody, {
+                animation: 150,
+                ghostClass: 'opacity-40',
+                onEnd: function () {
+                    const filas = tbody.querySelectorAll('tr[data-id]');
+                    const items = [];
+                    let orden = 1;
+
+                    filas.forEach(function (fila) {
+                        items.push({ id: parseInt(fila.dataset.id), orden: orden });
+
+                        const badge = fila.querySelector('.orden-badge');
+                        if (badge) badge.textContent = orden;
+
+                        orden++;
+                    });
+
+                    fetch('{{ route("admin.publicaciones.reordenar") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': window.csrfToken,
+                        },
+                        body: JSON.stringify({ items: items }),
+                    });
+                },
+            });
+        });
+        </script>
+        @endpush
+    @endif
+
 </x-layouts::app>

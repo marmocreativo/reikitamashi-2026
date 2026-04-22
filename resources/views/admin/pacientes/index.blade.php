@@ -55,7 +55,8 @@
             <flux:callout variant="danger" icon="x-circle" class="py-2">{{ session('error') }}</flux:callout>
         @endif
 
-        <div class="overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
+        {{-- Tabla (desktop) --}}
+        <div class="hidden md:block overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
             <table class="w-full text-sm">
                 <thead class="bg-zinc-50 text-left text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
                     <tr>
@@ -70,7 +71,6 @@
                 <tbody class="divide-y divide-zinc-100 bg-white dark:divide-zinc-700/60 dark:bg-zinc-900">
                     @forelse ($pacientes as $paciente)
                         <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
-
                             <td class="px-3 py-2">
                                 <span class="block font-medium leading-tight text-zinc-800 dark:text-white">
                                     {{ $paciente->nombre_completo }}
@@ -79,7 +79,6 @@
                                     <span class="text-xs text-zinc-400">{{ $paciente->edad }} años</span>
                                 @endif
                             </td>
-
                             <td class="px-3 py-2 text-zinc-500 dark:text-zinc-400">
                                 @if($paciente->TELEFONO)
                                     <span class="block text-xs">{{ $paciente->TELEFONO }}</span>
@@ -88,11 +87,9 @@
                                     <span class="block text-xs">{{ $paciente->EMAIL }}</span>
                                 @endif
                             </td>
-
                             <td class="px-3 py-2 text-center">
                                 <flux:badge size="sm" variant="outline">{{ $paciente->consultas_count }}</flux:badge>
                             </td>
-
                             <td class="px-3 py-2 text-center">
                                 @if($paciente->ESTADO === 'activo')
                                     <flux:badge size="sm" color="green">Activo</flux:badge>
@@ -100,11 +97,9 @@
                                     <flux:badge size="sm" color="red">Inactivo</flux:badge>
                                 @endif
                             </td>
-
                             <td class="px-3 py-2 text-center text-xs text-zinc-400">
                                 {{ $paciente->FECHA_REGISTRO->format('d/m/Y') }}
                             </td>
-
                             <td class="px-3 py-2">
                                 <div class="flex items-center justify-end gap-1">
                                     <flux:button size="sm" variant="ghost" icon="eye"
@@ -130,6 +125,68 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+
+        {{-- Tarjetas (mobile) --}}
+        <div class="flex md:hidden flex-col gap-3">
+            @forelse ($pacientes as $paciente)
+                <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-4 flex flex-col gap-3">
+
+                    {{-- Encabezado de tarjeta --}}
+                    <div class="flex items-start justify-between gap-2">
+                        <div>
+                            <p class="font-semibold text-zinc-800 dark:text-white leading-tight">
+                                {{ $paciente->nombre_completo }}
+                            </p>
+                            @if($paciente->FECHA_NACIMIENTO)
+                                <p class="text-xs text-zinc-400 mt-0.5">{{ $paciente->edad }} años</p>
+                            @endif
+                        </div>
+                        @if($paciente->ESTADO === 'activo')
+                            <flux:badge size="sm" color="green">Activo</flux:badge>
+                        @else
+                            <flux:badge size="sm" color="red">Inactivo</flux:badge>
+                        @endif
+                    </div>
+
+                    {{-- Datos de contacto --}}
+                    @if($paciente->TELEFONO || $paciente->EMAIL)
+                        <div class="text-xs text-zinc-500 dark:text-zinc-400 flex flex-col gap-0.5">
+                            @if($paciente->TELEFONO)
+                                <span>📞 {{ $paciente->TELEFONO }}</span>
+                            @endif
+                            @if($paciente->EMAIL)
+                                <span>✉️ {{ $paciente->EMAIL }}</span>
+                            @endif
+                        </div>
+                    @endif
+
+                    {{-- Pie de tarjeta --}}
+                    <div class="flex items-center justify-between border-t border-zinc-100 dark:border-zinc-700 pt-3">
+                        <div class="flex items-center gap-2 text-xs text-zinc-400">
+                            <flux:badge size="sm" variant="outline">{{ $paciente->consultas_count }} consultas</flux:badge>
+                            <span>{{ $paciente->FECHA_REGISTRO->format('d/m/Y') }}</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <flux:button size="sm" variant="ghost" icon="eye"
+                                href="{{ route('admin.pacientes.show', $paciente) }}" wire:navigate title="Ver expediente" />
+                            <flux:button size="sm" variant="ghost" icon="pencil"
+                                href="{{ route('admin.pacientes.edit', $paciente) }}" wire:navigate title="Editar" />
+                            <form method="POST" action="{{ route('admin.pacientes.destroy', $paciente) }}">
+                                @csrf
+                                @method('DELETE')
+                                <flux:button size="sm" variant="ghost" icon="trash" type="submit"
+                                    class="text-red-400 hover:text-red-600"
+                                    onclick="return confirm('¿Eliminar este paciente y todas sus consultas?')" title="Eliminar" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 px-4 py-10 text-center text-zinc-400">
+                    No hay pacientes registrados.
+                </div>
+            @endforelse
         </div>
 
         @if($pacientes->hasPages())

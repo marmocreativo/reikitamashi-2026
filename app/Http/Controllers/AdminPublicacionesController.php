@@ -65,12 +65,18 @@ class AdminPublicacionesController extends Controller
             });
         }
 
-        $publicaciones = $query->paginate(20)->withQueryString();
+        $modoReorden = (bool) ($tipo || $categoriaId);
+        $publicaciones = $modoReorden
+            ? $query->get()
+            : $query->paginate(20)->withQueryString();
 
         $categoria  = $categoriaId ? \App\Models\Categoria::find($categoriaId) : null;
         $categorias = \App\Models\Categoria::orderBy('CATEGORIA_NOMBRE')->get(['ID_CATEGORIA', 'CATEGORIA_NOMBRE', 'TIPO']);
 
-        return view('admin.publicaciones.index', compact('publicaciones', 'tipo', 'estado', 'buscar', 'categoria', 'categorias', 'categoriaId'));
+        return view('admin.publicaciones.index', compact(
+            'publicaciones', 'tipo', 'estado', 'buscar',
+            'categoria', 'categorias', 'categoriaId', 'modoReorden'
+        ));
     }
 
     public function create(Request $request)
@@ -204,5 +210,21 @@ class AdminPublicacionesController extends Controller
         $publicacion->update(['DESTACADA' => !$publicacion->DESTACADA]);
 
         return back()->with('success', $publicacion->DESTACADA ? 'Publicación destacada.' : 'Publicación quitada de destacadas.');
+    }
+
+    public function reordenar(Request $request)
+    {
+        $request->validate([
+            'items'         => 'required|array',
+            'items.*.id'    => 'required|integer',
+            'items.*.orden' => 'required|integer',
+        ]);
+
+        foreach ($request->items as $item) {
+            Publicacion::where('ID_PUBLICACION', $item['id'])
+                ->update(['ORDEN' => $item['orden']]);
+        }
+
+        return response()->json(['ok' => true]);
     }
 }

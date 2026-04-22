@@ -50,8 +50,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Publicaciones
         Route::patch('publicaciones/{publicacion}/destacada', [AdminPublicacionesController::class, 'toggleDestacada'])
             ->name('publicaciones.destacada');
+        Route::post('publicaciones/reordenar', [AdminPublicacionesController::class, 'reordenar'])->name('publicaciones.reordenar');
         Route::resource('publicaciones', AdminPublicacionesController::class)
             ->parameters(['publicaciones' => 'publicacion']);
+        
         
             // Galería de publicaciones
         Route::post('publicaciones/{publicacion}/galeria', [AdminGaleriaController::class, 'store'])->name('publicaciones.galeria.store');
