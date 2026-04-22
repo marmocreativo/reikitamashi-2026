@@ -7,7 +7,8 @@
 @props(['publicacion' => null, 'tipos' => [], 'categorias' => collect(), 'categoriaSeleccionada' => null])
 
 @php
-    $categoriaObj   = $categorias->firstWhere('ID_CATEGORIA', $categoriaSeleccionada);
+    $categoriasSeleccionadas = collect((array) $categoriaSeleccionada)->map(fn($v) => (string)$v)->toArray();
+    $categoriaObj   = $categorias->firstWhere('ID_CATEGORIA', $categoriasSeleccionadas[0] ?? null);
     $tipoActual     = old('TIPO', $categoriaObj?->TIPO ?? $publicacion?->TIPO ?? $tipos[0] ?? 'pagina');
     $raices         = $categorias->where('CATEGORIA_PADRE', 0);
     $hijas          = $categorias->where('CATEGORIA_PADRE', '!=', 0)->groupBy('CATEGORIA_PADRE');
@@ -249,24 +250,15 @@
 
         {{-- Árbol de categorías --}}
         <div>
-            <flux:label class="mb-1 block">Categoría</flux:label>
+            <flux:label class="mb-1 block">Categorías</flux:label>
             <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 overflow-hidden max-h-72 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-800 text-sm">
-
-                <label class="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
-                    <input type="radio" name="ID_CATEGORIA" value=""
-                        class="accent-zinc-400"
-                        {{ old('ID_CATEGORIA', $categoriaSeleccionada) === null ? 'checked' : '' }}
-                        x-on:change="onCategoriaChange(null)"
-                    />
-                    <span class="text-zinc-400 italic text-xs">Sin categoría</span>
-                </label>
 
                 @foreach($raices as $raiz)
                     <div>
                         <label class="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
-                            <input type="radio" name="ID_CATEGORIA" value="{{ $raiz->ID_CATEGORIA }}"
+                            <input type="checkbox" name="ID_CATEGORIA[]" value="{{ $raiz->ID_CATEGORIA }}"
                                 class="accent-blue-500"
-                                {{ (string)old('ID_CATEGORIA', $categoriaSeleccionada) === (string)$raiz->ID_CATEGORIA ? 'checked' : '' }}
+                                {{ in_array((string)$raiz->ID_CATEGORIA, old('ID_CATEGORIA', $categoriasSeleccionadas)) ? 'checked' : '' }}
                                 x-on:change="onCategoriaChange('{{ $raiz->TIPO }}')"
                             />
                             <span class="font-medium text-zinc-800 dark:text-zinc-100 leading-tight">{{ $raiz->CATEGORIA_NOMBRE }}</span>
@@ -276,9 +268,9 @@
                         @if(isset($hijas[$raiz->ID_CATEGORIA]))
                             @foreach($hijas[$raiz->ID_CATEGORIA] as $hija)
                                 <label class="flex items-center gap-2 pl-7 pr-3 py-1.5 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-800/20">
-                                    <input type="radio" name="ID_CATEGORIA" value="{{ $hija->ID_CATEGORIA }}"
+                                    <input type="checkbox" name="ID_CATEGORIA[]" value="{{ $hija->ID_CATEGORIA }}"
                                         class="accent-blue-500"
-                                        {{ (string)old('ID_CATEGORIA', $categoriaSeleccionada) === (string)$hija->ID_CATEGORIA ? 'checked' : '' }}
+                                        {{ in_array((string)$hija->ID_CATEGORIA, old('ID_CATEGORIA', $categoriasSeleccionadas)) ? 'checked' : '' }}
                                         x-on:change="onCategoriaChange('{{ $hija->TIPO }}')"
                                     />
                                     <span class="text-zinc-600 dark:text-zinc-300 leading-tight">{{ $hija->CATEGORIA_NOMBRE }}</span>

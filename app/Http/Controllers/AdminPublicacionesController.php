@@ -122,11 +122,15 @@ class AdminPublicacionesController extends Controller
         $publicacion = Publicacion::create($data);
 
         if ($request->filled('ID_CATEGORIA')) {
-            \DB::table('categorias_objetos')->insert([
-                'ID_CATEGORIA' => $request->ID_CATEGORIA,
-                'ID_OBJETO'    => $publicacion->ID_PUBLICACION,
-                'TIPO'         => $publicacion->TIPO,
-            ]);
+            $inserts = [];
+            foreach ((array) $request->ID_CATEGORIA as $catId) {
+                $inserts[] = [
+                    'ID_CATEGORIA' => $catId,
+                    'ID_OBJETO'    => $publicacion->ID_PUBLICACION,
+                    'TIPO'         => $publicacion->TIPO,
+                ];
+            }
+            \DB::table('categorias_objetos')->insert($inserts);
         }
 
         return redirect()
@@ -144,7 +148,8 @@ class AdminPublicacionesController extends Controller
 
         $categoriaSeleccionada = \DB::table('categorias_objetos')
             ->where('ID_OBJETO', $publicacion->ID_PUBLICACION)
-            ->value('ID_CATEGORIA');
+            ->pluck('ID_CATEGORIA')
+            ->toArray();
 
         return view('admin.publicaciones.edit', compact('publicacion', 'tipos', 'categorias', 'categoriaSeleccionada'));
     }
@@ -180,11 +185,15 @@ class AdminPublicacionesController extends Controller
             ->delete();
 
         if ($request->filled('ID_CATEGORIA')) {
-            \DB::table('categorias_objetos')->insert([
-                'ID_CATEGORIA' => $request->ID_CATEGORIA,
-                'ID_OBJETO'    => $publicacion->ID_PUBLICACION,
-                'TIPO'         => $publicacion->TIPO,
-            ]);
+            $inserts = [];
+            foreach ((array) $request->ID_CATEGORIA as $catId) {
+                $inserts[] = [
+                    'ID_CATEGORIA' => $catId,
+                    'ID_OBJETO'    => $publicacion->ID_PUBLICACION,
+                    'TIPO'         => $publicacion->TIPO,
+                ];
+            }
+            \DB::table('categorias_objetos')->insert($inserts);
         }
 
         return redirect()

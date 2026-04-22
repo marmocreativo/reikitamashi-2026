@@ -62,12 +62,6 @@
         {{-- Columna derecha 3/4 --}}
         <div class="w-full md:w-3/4 flex flex-col gap-6">
 
-            @if($publicacion->PUBLICACION_RESUMEN)
-            <p class="text-lg text-gray-500 border-l-4 border-primary/40 pl-4 leading-relaxed">
-                {{ $publicacion->PUBLICACION_RESUMEN }}
-            </p>
-            @endif
-
             @if($publicacion->PUBLICACION_CONTENIDO)
             <div class="prose prose-zinc max-w-none">
                 {!! $publicacion->PUBLICACION_CONTENIDO !!}
