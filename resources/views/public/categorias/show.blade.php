@@ -27,6 +27,10 @@
                 <h1 class="text-3xl md:text-5xl font-bold text-white drop-shadow" style="font-family: 'Georgia', serif;">
                     {{ $categoria->CATEGORIA_NOMBRE }}
                 </h1>
+                @include('public._partials.boton_compartir', [
+                    'titulo' => $categoria->CATEGORIA_NOMBRE,
+                    'url'    => url()->current(),
+                ])
                
             </div>
 

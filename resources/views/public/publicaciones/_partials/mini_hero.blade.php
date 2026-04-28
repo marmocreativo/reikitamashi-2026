@@ -25,6 +25,10 @@
                 {!! strip_tags($heroDescripcion) !!}
             </p>
             @endif
+            @include('public._partials.boton_compartir', [
+                    'titulo' => $publicacion->PUBLICACION_TITULO,
+                    'url'    => url()->current(),
+                ])
         </div>
 
     </div>

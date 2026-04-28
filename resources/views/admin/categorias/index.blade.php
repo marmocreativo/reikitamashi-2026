@@ -68,6 +68,12 @@
             </flux:button>
         </div>
 
+        {{-- Aviso reordenamiento --}}
+        <div class="flex items-center gap-2 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 px-4 py-2 text-sm text-amber-700 dark:text-amber-300">
+            <flux:icon.arrows-up-down class="size-4 shrink-0" />
+            <span>Arrastra las filas para reordenar. Los cambios se guardan automáticamente.</span>
+        </div>
+
         {{-- Mensajes --}}
         @if(session('success'))
             <flux:callout variant="success" icon="check-circle" class="py-2">
@@ -86,6 +92,7 @@
             <table class="w-full text-sm">
                 <thead class="bg-zinc-50 text-left text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
                     <tr>
+                        <th class="px-3 py-2 w-6"></th>
                         <th class="px-3 py-2">Imagen</th>
                         <th class="px-3 py-2">Nombre / URL</th>
                         <th class="px-3 py-2">Tipo</th>
@@ -96,9 +103,14 @@
                         <th class="px-3 py-2"></th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-zinc-100 bg-white dark:divide-zinc-700/60 dark:bg-zinc-900">
+                <tbody id="tabla-categorias" class="divide-y divide-zinc-100 bg-white dark:divide-zinc-700/60 dark:bg-zinc-900">
                     @forelse ($categorias as $categoria)
-                        <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
+                        <tr data-id="{{ $categoria->ID_CATEGORIA }}" class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-grab">
+
+                            {{-- Handle --}}
+                            <td class="px-3 py-2 text-zinc-300 dark:text-zinc-600">
+                                <flux:icon.bars-3 class="size-4" />
+                            </td>
 
                             {{-- Imagen --}}
                             <td class="px-3 py-2">
@@ -143,7 +155,7 @@
                             </td>
 
                             {{-- Orden --}}
-                            <td class="px-3 py-2 text-center text-xs text-zinc-500 dark:text-zinc-400">
+                            <td class="px-3 py-2 text-center text-xs text-zinc-500 dark:text-zinc-400 orden-badge">
                                 {{ $categoria->ORDEN }}
                             </td>
 
@@ -215,7 +227,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="px-4 py-10 text-center text-zinc-400">
+                            <td colspan="9" class="px-4 py-10 text-center text-zinc-400">
                                 No hay categorías registradas.
                             </td>
                         </tr>
@@ -225,4 +237,39 @@
         </div>
 
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.3/Sortable.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tbody = document.getElementById('tabla-categorias');
+        if (!tbody) return;
+
+        Sortable.create(tbody, {
+            animation: 150,
+            ghostClass: 'opacity-40',
+            onEnd: function () {
+                const filas = tbody.querySelectorAll('tr[data-id]');
+                const items = [];
+                let orden = 1;
+
+                filas.forEach(function (fila) {
+                    items.push({ id: parseInt(fila.dataset.id), orden: orden });
+                    const badge = fila.querySelector('.orden-badge');
+                    if (badge) badge.textContent = orden;
+                    orden++;
+                });
+
+                fetch('{{ route("admin.categorias.reordenar") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                    body: JSON.stringify({ items: items }),
+                });
+            },
+        });
+    });
+    </script>
+
 </x-layouts::app>

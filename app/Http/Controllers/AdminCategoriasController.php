@@ -99,6 +99,8 @@ class AdminCategoriasController extends Controller
         $data['DESTACADA']       = $request->boolean('DESTACADA');
         $data['IMAGEN']          = 'default.jpg';
 
+        $data['CATEGORIA_DESCRIPCION'] = $data['CATEGORIA_DESCRIPCION'] ?? '';
+
         if ($request->hasFile('imagen')) {
             $data['IMAGEN'] = $this->procesarImagen($request->file('imagen'));
         }
@@ -133,6 +135,8 @@ class AdminCategoriasController extends Controller
 
         $data['DESTACADA'] = $request->boolean('DESTACADA');
 
+        $data['CATEGORIA_DESCRIPCION'] = $data['CATEGORIA_DESCRIPCION'] ?? '';
+
         if ($request->hasFile('imagen')) {
             $data['IMAGEN'] = $this->procesarImagen($request->file('imagen'), $categoria->IMAGEN);
         }
@@ -166,5 +170,21 @@ class AdminCategoriasController extends Controller
         $categoria->update(['DESTACADA' => !$categoria->DESTACADA]);
 
         return back()->with('success', $categoria->DESTACADA ? 'Categoría destacada.' : 'Categoría quitada de destacadas.');
+    }
+
+    public function reordenar(Request $request)
+    {
+        $request->validate([
+            'items'         => 'required|array',
+            'items.*.id'    => 'required|integer',
+            'items.*.orden' => 'required|integer',
+        ]);
+
+        foreach ($request->items as $item) {
+            Categoria::where('ID_CATEGORIA', $item['id'])
+                ->update(['ORDEN' => $item['orden']]);
+        }
+
+        return response()->json(['ok' => true]);
     }
 }

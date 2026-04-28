@@ -29,6 +29,10 @@
             @if($publicacion->PUBLICACION_RESUMEN)
             <p class="text-gray-500 text-sm mt-1">{{ $publicacion->PUBLICACION_RESUMEN }}</p>
             @endif
+            @include('public._partials.boton_compartir', [
+                    'titulo' => $publicacion->PUBLICACION_TITULO,
+                    'url'    => url()->current(),
+                ])
         </div>
     </div>
 </section>

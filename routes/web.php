@@ -45,6 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('categorias/{categoria}/hijas', [AdminCategoriasController::class, 'hijas'])->name('categorias.hijas');
         Route::patch('categorias/{categoria}/destacada', [AdminCategoriasController::class, 'toggleDestacada'])
             ->name('categorias.destacada');
+        Route::post('categorias/reordenar', [AdminCategoriasController::class, 'reordenar'])->name('categorias.reordenar');
         Route::resource('categorias', AdminCategoriasController::class);
 
         // Publicaciones
