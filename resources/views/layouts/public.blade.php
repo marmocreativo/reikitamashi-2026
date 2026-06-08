@@ -7,6 +7,15 @@
     <title>{{ config('app.name') }} — @yield('title', 'Inicio')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BXCDZ13YXK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BXCDZ13YXK');
+</script>
 </head>
 <body class="bg-white text-gray-800 antialiased">
 
